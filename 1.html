@@ -1,0 +1,5592 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>网络安全 & CTF 学习路线 | 极客创新实验室 · 网络安全战队</title>
+  <meta name="description" content="极客创新实验室·网络安全战队出品：从零基础到实战，以CTF为练兵场，走向真实工业级网络安全与AI攻防的完整全景图谱。" />
+  <style>
+    /* ==========================================================================
+       DESIGN SYSTEM TOKENS (LIGHT ENGINEERING SPECIFICATION)
+       ========================================================================== */
+    :root {
+      --bg-page: #f0f4f9;
+      --bg-card: #ffffff;
+      --bg-header-band: #e2eaf4;
+      --bg-subtle: #f8fafc;
+      --bg-active: #dbeafe;
+
+      --border-light: #cbd5e1;
+      --border-medium: #94a3b8;
+      --border-strong: #64748b;
+      --border-focus: #2563eb;
+
+      --text-title: #0f172a;
+      --text-body: #1e293b;
+      --text-muted: #475569;
+      --text-light: #64748b;
+
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --primary-subtle: #eff6ff;
+      --primary-border: #93c5fd;
+
+      --danger-bg: #fef2f2;
+      --danger-border: #fecaca;
+      --danger-text: #991b1b;
+
+      --radius-sm: 4px;
+      --radius-md: 8px;
+      --radius-lg: 12px;
+
+      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      --font-mono: "JetBrains Mono", "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+
+      --shadow-card: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.05);
+      --shadow-modal: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Base Reset */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 104px;
+      font-family: var(--font-sans);
+      font-size: 16px;
+      line-height: 1.65;
+      color: var(--text-body);
+      background-color: var(--bg-page);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+      min-height: 100vh;
+      background: var(--bg-page);
+      color: var(--text-body);
+    }
+
+    a {
+      color: var(--primary);
+      text-decoration: none;
+      transition: color 0.15s ease;
+    }
+
+    a:hover {
+      color: var(--primary-hover);
+      text-decoration: underline;
+    }
+
+    code, kbd, pre {
+      font-family: var(--font-mono);
+      font-size: 0.88em;
+    }
+
+    /* Reading Progress */
+    #reading-progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      background: var(--primary);
+      width: 0%;
+      z-index: 1000;
+      transition: width 0.1s linear;
+    }
+
+    /* ==========================================================================
+       TOP NAVIGATION BAR
+       ========================================================================== */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      background: rgba(255, 255, 255, 0.96);
+      border-bottom: 1px solid var(--border-light);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+
+    .header-inner {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 0 1.25rem;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+    }
+
+    .brand-area {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      flex-shrink: 0;
+    }
+
+    .brand-title {
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: var(--text-title);
+      white-space: nowrap;
+    }
+
+    /* Desktop Center Nav Anchors */
+    .header-nav-anchors {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      flex-shrink: 0;
+    }
+    .header-anchor-link {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      padding: 0.32rem 0.55rem;
+      border-radius: var(--radius-sm);
+      transition: all 0.15s ease;
+      text-decoration: none !important;
+      white-space: nowrap;
+    }
+    .header-anchor-link:hover {
+      color: var(--primary);
+      background: var(--primary-subtle);
+    }
+    .header-anchor-link.active {
+      color: var(--primary);
+      font-weight: 700;
+      background: var(--primary-subtle);
+    }
+    @media (max-width: 990px) {
+      .header-nav-anchors {
+        display: none;
+      }
+      .mobile-menu-btn {
+        display: inline-flex !important;
+      }
+    }
+
+    .brand-area {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      min-width: 0;
+    }
+
+    .brand-title {
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: var(--text-title);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .brand-tag {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      background: var(--bg-header-band);
+      border: 1px solid var(--border-light);
+      padding: 0.1rem 0.45rem;
+      border-radius: var(--radius-sm);
+      white-space: nowrap;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      flex-shrink: 0;
+    }
+
+    .search-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: var(--bg-page);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-sm);
+      padding: 0.35rem 0.65rem;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      min-height: 34px;
+    }
+
+    .search-btn:hover {
+      border-color: var(--border-strong);
+      color: var(--text-title);
+      background: #ffffff;
+    }
+
+    .search-btn svg {
+      flex-shrink: 0;
+    }
+
+    .search-kbd {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      background: #ffffff;
+      border: 1px solid var(--border-light);
+      padding: 0.05rem 0.3rem;
+      border-radius: 3px;
+    }
+
+    .btn-arena-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      background: var(--primary);
+      color: #ffffff !important;
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 0.38rem 0.8rem;
+      border-radius: var(--radius-sm);
+      transition: background 0.15s ease;
+      text-decoration: none !important;
+      white-space: nowrap;
+    }
+
+    .btn-arena-link:hover {
+      background: var(--primary-hover);
+    }
+
+    /* Mobile Menu Toggle Button */
+    .mobile-menu-btn {
+      display: none;
+      background: var(--bg-page);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-sm);
+      width: 34px;
+      height: 34px;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--text-title);
+      font-size: 1.1rem;
+    }
+
+    /* ==========================================================================
+       FIRST SCREEN: HERO + 00 ICEBREAKER DASHBOARD (100vh BREATHING VIEW)
+       ========================================================================== */
+    .first-screen-container {
+      min-height: calc(100vh - 56px);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 3rem 1.25rem 3.5rem;
+      background: #ffffff;
+      border-bottom: 1px solid var(--border-light);
+      box-sizing: border-box;
+      scroll-margin-top: 76px;
+    }
+    .first-screen-inner {
+      max-width: 1080px;
+      width: 100%;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1.85rem;
+    }
+    .hero-clean-block {
+      max-width: 900px;
+    }
+    .icebreaker-cards-wrap {
+      margin-top: 0.25rem;
+    }
+    .icebreaker-section-subhead {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 0.85rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px dashed var(--border-light);
+    }
+    .icebreaker-kicker {
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      font-weight: 800;
+      color: var(--primary);
+      letter-spacing: 0.04em;
+    }
+    .icebreaker-subtext {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    /* ==========================================================================
+       CLEAN MINIMAL HERO (THE FIRST SCREEN)
+       ========================================================================== */
+    .hero-clean {
+      background: #ffffff;
+      border-bottom: 1px solid var(--border-light);
+      padding: 3rem 1.25rem 2.25rem;
+    }
+
+    .hero-clean-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      text-align: left;
+    }
+
+    .hero-label-kicker {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      letter-spacing: 0.04em;
+      margin-bottom: 0.65rem;
+      text-transform: uppercase;
+    }
+
+    .hero-clean-title {
+      font-size: clamp(1.75rem, 3.6vw, 2.25rem);
+      font-weight: 800;
+      color: var(--text-title);
+      letter-spacing: -0.025em;
+      line-height: 1.2;
+      margin-bottom: 0.45rem;
+    }
+
+    .hero-clean-lead {
+      font-size: 0.96rem;
+      line-height: 1.6;
+      color: var(--text-body);
+      margin-bottom: 1.15rem;
+      max-width: 820px;
+    }
+
+    .hero-actions-group {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary-hero {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      background: var(--primary);
+      color: #ffffff !important;
+      font-size: 0.88rem;
+      font-weight: 600;
+      padding: 0.55rem 1.15rem;
+      border-radius: var(--radius-sm);
+      transition: all 0.15s ease;
+      text-decoration: none !important;
+      box-shadow: 0 2px 8px rgba(37, 99, 235, 0.22);
+    }
+
+    .btn-primary-hero:hover {
+      background: var(--primary-hover);
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary-hero {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      background: #ffffff;
+      border: 1px solid var(--border-medium);
+      color: var(--text-title) !important;
+      font-size: 0.88rem;
+      font-weight: 600;
+      padding: 0.55rem 1.15rem;
+      border-radius: var(--radius-sm);
+      transition: all 0.15s ease;
+      text-decoration: none !important;
+    }
+
+    .btn-secondary-hero:hover {
+      border-color: var(--border-strong);
+      background: var(--bg-page);
+    }
+
+    /* ==========================================================================
+       MAIN DUAL-PANE CONTAINER & CONTAINERIZED CHAPTERS
+       ========================================================================== */
+    .main-container {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 4rem 1.25rem 5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 4.5rem;
+    }
+
+    /* Unboxed Section System (Anti-Container Bloat) */
+    .unboxed-section {
+      scroll-margin-top: 76px;
+    }
+    .unboxed-section-header {
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+    .unboxed-title-row {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .unboxed-title {
+      font-size: 1.65rem;
+      font-weight: 800;
+      color: var(--text-title);
+      letter-spacing: -0.02em;
+    }
+    .unboxed-desc {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+    }
+    .checklist-container-clean {
+      background: #ffffff;
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      box-shadow: var(--shadow-card);
+    }
+
+    /* Left Sticky Sidebar */
+    .sidebar-nav {
+      position: sticky;
+      top: 76px;
+      background: #ffffff;
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-lg);
+      padding: 1.1rem;
+      box-shadow: var(--shadow-card);
+    }
+
+    .sidebar-heading {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 0.65rem;
+      padding-bottom: 0.4rem;
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .nav-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+
+    .nav-item-link {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      padding: 0.35rem 0.55rem;
+      border-radius: var(--radius-sm);
+      display: block;
+      transition: all 0.15s ease;
+    }
+
+    .nav-item-link:hover, .nav-item-link.active {
+      color: var(--primary);
+      font-weight: 600;
+      background: var(--primary-subtle);
+      text-decoration: none;
+    }
+
+    .sidebar-card-box {
+      margin-top: 1.25rem;
+      padding: 0.85rem;
+      background: var(--bg-page);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-md);
+      font-size: 0.78rem;
+    }
+
+    .sidebar-card-box strong {
+      display: block;
+      color: var(--text-title);
+      margin-bottom: 0.25rem;
+    }
+
+    .sidebar-card-box p {
+      color: var(--text-muted);
+      line-height: 1.45;
+      margin-bottom: 0.5rem;
+    }
+
+    /* ==========================================================================
+       CONTAINERIZED CHAPTER SYSTEM (REAL-WORLD ENGINEERING SEPARATION)
+       ========================================================================== */
+    .content-body {
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 2.5rem; /* Generous physical separation */
+    }
+
+    .chapter-card {
+      background: #ffffff;
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-card);
+      scroll-margin-top: 76px;
+      overflow: hidden;
+      transition: border-color 0.15s ease;
+    }
+
+    .chapter-card:hover {
+      border-color: var(--border-medium);
+    }
+
+    /* Distinct Chapter Header Banner */
+    .chapter-header {
+      background: var(--bg-header-band);
+      border-bottom: 1px solid var(--border-light);
+      padding: 1.15rem 1.5rem;
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+    }
+
+    .chapter-header-left {
+      display: flex;
+      align-items: baseline;
+      gap: 0.65rem;
+    }
+
+    .chapter-tag {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--primary);
+      background: #ffffff;
+      border: 1px solid var(--border-light);
+      padding: 0.15rem 0.45rem;
+      border-radius: var(--radius-sm);
+    }
+
+    .chapter-title {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--text-title);
+      letter-spacing: -0.015em;
+    }
+
+    .chapter-desc {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+
+    /* Chapter Content Area */
+    .chapter-body {
+      padding: 1.5rem;
+    }
+
+    /* Section 0: Callout Notice */
+    .notice-callout {
+      background: var(--primary-subtle);
+      border-left: 4px solid var(--primary);
+      padding: 1rem 1.15rem;
+      border-radius: var(--radius-sm);
+      margin-bottom: 1.25rem;
+    }
+
+    .notice-callout strong {
+      display: block;
+      color: var(--primary);
+      font-size: 0.9rem;
+      margin-bottom: 0.3rem;
+    }
+
+    .notice-callout p {
+      font-size: 0.86rem;
+      color: var(--text-body);
+      line-height: 1.6;
+    }
+
+    .videos-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1rem;
+    }
+
+    .video-card {
+      background: var(--bg-page);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-md);
+      padding: 1.15rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 0.75rem;
+      transition: border-color 0.15s ease;
+    }
+
+    .video-card:hover {
+      border-color: var(--border-strong);
+    }
+
+    .video-card h4 {
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: var(--text-title);
+      margin-bottom: 0.25rem;
+    }
+
+    .video-card p {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .video-link {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--primary);
+    }
+
+    
+    .btn-asset-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      background: var(--bg-card);
+      color: var(--text-body);
+      border: 1px solid var(--border-medium);
+      font-size: 0.78rem;
+      font-weight: 600;
+      padding: 0.38rem 0.75rem;
+      border-radius: var(--radius-sm);
+      text-decoration: none;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+    }
+
+    .btn-asset-link:hover {
+      background: var(--bg-header-band);
+      color: var(--text-title);
+      border-color: var(--border-strong);
+    }
+
+    .lab-asset-banner {
+      background: #ffffff;
+      border: 1px solid var(--border-light);
+      border-left: 3px solid #7c3aed;
+      border-radius: var(--radius-md);
+      padding: 1rem 1.25rem;
+      margin-top: 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      box-shadow: var(--shadow-card);
+    }
+
+    /* Section 1: Stages Table / Cards */
+    .stages-table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-md);
+      background: #ffffff;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .stages-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.85rem;
+      min-width: 540px; /* Allow smooth horizontal swipe on small screens */
+    }
+
+    .stages-table th {
+      background: var(--bg-header-band);
+      padding: 0.75rem 1rem;
+      font-weight: 700;
+      color: var(--text-title);
+      border-bottom: 1px solid var(--border-medium);
+      white-space: nowrap;
+    }
+
+    .stages-table td {
+      padding: 0.95rem 1rem;
+      border-bottom: 1px solid var(--border-light);
+      vertical-align: top;
+      color: var(--text-body);
+      line-height: 1.6;
+    }
+
+    .stages-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .stage-pill {
+      font-family: var(--font-mono);
+      font-size: 0.74rem;
+      font-weight: 700;
+      padding: 0.15rem 0.45rem;
+      border-radius: var(--radius-sm);
+      background: var(--bg-header-band);
+      border: 1px solid var(--border-medium);
+      color: var(--text-title);
+      display: inline-block;
+      margin-bottom: 0.3rem;
+    }
+
+    /* Section 2: Phase 1 Language Cards */
+    .cards-grid-3 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .tool-card {
+      background: var(--bg-page);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-md);
+      padding: 1.15rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      transition: border-color 0.15s ease;
+    }
+
+    .tool-card:hover {
+      border-color: var(--border-strong);
+    }
+
+    .tool-header {
+      margin-bottom: 0.65rem;
+    }
+
+    .tool-title {
+      font-size: 0.96rem;
+      font-weight: 700;
+      color: var(--text-title);
+      margin-bottom: 0.2rem;
+    }
+
+    .tool-subtitle {
+      font-size: 0.76rem;
+      color: var(--text-muted);
+    }
+
+    .tool-target-box {
+      font-size: 0.8rem;
+      background: transparent;
+      border-left: 3px solid var(--border-medium);
+      padding: 0.45rem 0.75rem;
+      margin-bottom: 0.65rem;
+      line-height: 1.55;
+    }
+
+    .res-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .res-list li a {
+      font-size: 0.8rem;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    /* AI Hub Box */
+    .ai-box {
+      background: var(--bg-page);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+    }
+
+    .ai-box-title {
+      font-size: 0.98rem;
+      font-weight: 700;
+      color: var(--text-title);
+      margin-bottom: 0.35rem;
+    }
+
+    .ai-box-desc {
+      font-size: 0.84rem;
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+      line-height: 1.55;
+    }
+
+    .ai-quad-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 0.85rem;
+    }
+
+    .ai-col-item {
+      background: #ffffff;
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-sm);
+      padding: 0.85rem;
+    }
+
+    .ai-col-item h5 {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text-title);
+      margin-bottom: 0.3rem;
+    }
+
+    .ai-chip-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.3rem;
+      margin-bottom: 0.45rem;
+    }
+
+    .simple-chip {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      background: var(--bg-page);
+      border: 1px solid var(--border-light);
+      color: var(--text-body);
+      padding: 0.1rem 0.35rem;
+      border-radius: 3px;
+    }
+
+    .ai-note {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      line-height: 1.45;
+    }
+
+    /* Section 3: CTF Directions */
+    .tab-bar-clean {
+      display: flex;
+      gap: 0.45rem;
+      margin-bottom: 1.25rem;
+      flex-wrap: wrap;
+    }
+
+    .tab-clean-btn {
+      background: var(--bg-page);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-sm);
+      padding: 0.4rem 0.85rem;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.15s ease;
+      min-height: 38px;
+    }
+
+    .tab-clean-btn:hover {
+      border-color: var(--border-strong);
+      color: var(--text-title);
+      background: #ffffff;
+    }
+
+    .tab-clean-btn.active {
+      background: var(--text-title);
+      color: #ffffff;
+      border-color: var(--text-title);
+    }
+
+    .dirs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .dir-card-clean {
+      position: relative;
+      overflow: hidden;
+      background: #ffffff;
+      border: 1.5px solid #cbd5e1;
+      border-top: 4px solid var(--dir-accent, #2563eb);
+      border-radius: var(--radius-lg);
+      padding: 2.25rem 2rem 2rem;
+      min-height: 520px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: 0 4px 10px -2px rgba(15, 23, 42, 0.06), 0 2px 4px -2px rgba(15, 23, 42, 0.04);
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .dir-card-clean:hover {
+      border-color: var(--dir-accent, #2563eb);
+      transform: translateY(-4px);
+      box-shadow: 0 16px 24px -6px rgba(15, 23, 42, 0.12), 0 6px 10px -4px rgba(15, 23, 42, 0.06);
+    }
+
+    /* Background image with top alignment & smooth downward fade mask */
+    .dir-card-bg-mask {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 220px;
+      overflow: hidden;
+      pointer-events: none;
+      z-index: 0;
+      border-top-left-radius: calc(var(--radius-lg) - 1.5px);
+      border-top-right-radius: calc(var(--radius-lg) - 1.5px);
+      mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.88) 0%, rgba(0, 0, 0, 0.55) 45%, rgba(0, 0, 0, 0) 100%);
+      -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.88) 0%, rgba(0, 0, 0, 0.55) 45%, rgba(0, 0, 0, 0) 100%);
+    }
+
+    .dir-card-bg-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      opacity: 0.32;
+      filter: saturate(1.2);
+      transition: all 0.35s ease;
+    }
+
+    .dir-card-clean:hover .dir-card-bg-img {
+      opacity: 0.46;
+      transform: scale(1.04);
+      filter: saturate(1.35);
+    }
+
+    .dir-card-bg-grid-overlay {
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(var(--dir-accent, #2563eb) 0.85px, transparent 0.85px);
+      background-size: 16px 16px;
+      opacity: 0.14;
+      mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0) 80%);
+      -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0) 80%);
+    }
+
+    .dir-card-inner {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      justify-content: space-between;
+    }
+
+    .dir-top-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.85rem;
+    }
+
+    .dir-code-tag {
+      font-family: var(--font-mono);
+      font-size: 0.74rem;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      padding: 0.2rem 0.6rem;
+      border-radius: var(--radius-sm);
+      background: color-mix(in srgb, var(--dir-accent, #2563eb) 10%, #ffffff);
+      border: 1.5px solid color-mix(in srgb, var(--dir-accent, #2563eb) 40%, #ffffff);
+      color: var(--dir-accent, #2563eb);
+    }
+
+    .dir-level {
+      font-size: 0.78rem;
+      font-family: var(--font-mono);
+      font-weight: 700;
+      color: var(--text-muted);
+      background: rgba(255, 255, 255, 0.9);
+      padding: 0.15rem 0.5rem;
+      border-radius: 4px;
+      border: 1px solid var(--border-light);
+    }
+
+    .dir-card-clean h4 {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--text-title);
+      margin-bottom: 0.65rem;
+      letter-spacing: -0.01em;
+    }
+
+    .dir-text {
+      font-size: 0.88rem;
+      color: var(--text-body);
+      line-height: 1.65;
+      margin-bottom: 1.15rem;
+    }
+
+    .tools-wrap {
+      margin-bottom: 0.85rem;
+    }
+
+    .tools-caption {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      margin-bottom: 0.3rem;
+      display: block;
+    }
+
+    .tag-cluster {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.3rem;
+    }
+
+    .tag-unit {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      background: #ffffff;
+      border: 1px solid var(--border-light);
+      padding: 0.12rem 0.4rem;
+      border-radius: var(--radius-sm);
+      color: var(--text-body);
+    }
+
+    .dir-links-footer {
+      border-top: 1px solid var(--border-light);
+      padding-top: 0.65rem;
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .dir-links-footer li a {
+      font-size: 0.8rem;
+      color: var(--primary);
+    }
+
+    /* Section 4: Arenas Grid */
+    .arenas-grid-5 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 0.85rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .arena-box-clean {
+      position: relative;
+      background: #ffffff;
+      border: 1px solid var(--border-light);
+      border-radius: var(--card-radius);
+      padding: 1.15rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 0.65rem;
+      box-shadow: var(--shadow-ambient);
+      transition: all 0.22s ease;
+    }
+
+    .arena-box-clean:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px -4px rgba(15, 23, 42, 0.08);
+      border-color: var(--primary-border);
+    }
+
+    .arena-title-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.35rem;
+    }
+
+    .arena-title-row strong {
+      font-size: 0.92rem;
+      color: var(--text-title);
+    }
+
+    .arena-stage-tag {
+      font-size: 0.68rem;
+      font-family: var(--font-mono);
+      background: #ffffff;
+      border: 1px solid var(--border-light);
+      padding: 0.1rem 0.35rem;
+      border-radius: 3px;
+      color: var(--text-muted);
+    }
+
+    .arena-desc-txt {
+      font-size: 0.78rem;
+      color: var(--text-body);
+      line-height: 1.45;
+    }
+
+    .arena-cta-link {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--primary);
+    }
+
+    /* Writeup Template Card */
+    .writeup-box {
+      background: var(--bg-page);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+    }
+
+    .writeup-header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.65rem;
+      border-bottom: 1px solid var(--border-light);
+      padding-bottom: 0.65rem;
+      margin-bottom: 0.85rem;
+    }
+
+    .writeup-header-row h4 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text-title);
+    }
+
+    .btn-copy-clean {
+      background: #ffffff;
+      border: 1px solid var(--border-medium);
+      border-radius: var(--radius-sm);
+      padding: 0.35rem 0.75rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-title);
+      cursor: pointer;
+      transition: all 0.15s ease;
+      min-height: 36px;
+    }
+
+    .btn-copy-clean:hover {
+      background: var(--primary);
+      color: #ffffff;
+      border-color: var(--primary);
+    }
+
+    .writeup-steps-timeline {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.65rem 1.25rem;
+      margin-bottom: 0.85rem;
+      background: #ffffff;
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-sm);
+      padding: 0.85rem 1.1rem;
+    }
+
+    @media (max-width: 640px) {
+      .writeup-steps-timeline {
+        grid-template-columns: 1fr;
+        gap: 0.65rem;
+        padding: 0.75rem 0.85rem;
+      }
+    }
+
+    .writeup-timeline-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.65rem;
+    }
+
+    .writeup-step-badge {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--primary);
+      background: var(--primary-subtle);
+      border: 1px solid var(--primary-border);
+      padding: 0.12rem 0.38rem;
+      border-radius: 4px;
+      line-height: 1.2;
+      flex-shrink: 0;
+      margin-top: 0.15rem;
+    }
+
+    .writeup-step-content {
+      min-width: 0;
+    }
+
+    .writeup-step-title {
+      font-size: 0.84rem;
+      font-weight: 700;
+      color: var(--text-title);
+      line-height: 1.35;
+    }
+
+    .writeup-step-desc {
+      font-size: 0.76rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+      margin-top: 0.1rem;
+    }
+
+    .code-preview-block {
+      background: #ffffff;
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-sm);
+      padding: 0.85rem;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--text-body);
+      line-height: 1.55;
+      max-height: 180px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    /* Section 5: Beyond CTF */
+    .beyond-grid-clean {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1rem;
+    }
+
+    .beyond-unit {
+      background: var(--bg-page);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-md);
+      padding: 1.15rem;
+    }
+
+    .beyond-unit h4 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text-title);
+      margin-bottom: 0.35rem;
+    }
+
+    .beyond-unit p {
+      font-size: 0.82rem;
+      color: var(--text-body);
+      line-height: 1.55;
+      margin-bottom: 0.75rem;
+    }
+
+    .badge-wrap-clean {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.3rem;
+    }
+
+    /* Section 6: Security Red Lines */
+    .redline-grid-clean {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 0.85rem;
+    }
+
+    .redline-card-clean {
+      background: var(--bg-page);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-md);
+      padding: 1.1rem;
+    }
+
+    .redline-card-clean.legal {
+      background: var(--danger-bg);
+      border-color: var(--danger-border);
+    }
+
+    .redline-card-clean.legal h5 {
+      color: var(--danger-text);
+    }
+
+    .redline-card-clean.legal p {
+      color: #7f1d1d;
+    }
+
+    .redline-card-clean h5 {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--text-title);
+      margin-bottom: 0.3rem;
+    }
+
+    .redline-card-clean p {
+      font-size: 0.8rem;
+      color: var(--text-body);
+      line-height: 1.5;
+    }
+
+    /* Section 7: Checklist */
+    .check-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.65rem;
+      margin-bottom: 1rem;
+    }
+
+    .check-header strong {
+      font-size: 0.95rem;
+      color: var(--text-title);
+    }
+
+    .progress-track {
+      width: 150px;
+      height: 7px;
+      background: var(--bg-header-band);
+      border-radius: 999px;
+      overflow: hidden;
+      border: 1px solid var(--border-light);
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: var(--primary);
+      width: 0%;
+      transition: width 0.25s ease;
+    }
+
+    .checklist-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.75rem;
+    }
+    @media (max-width: 680px) {
+      .checklist-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .check-row {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      background: var(--bg-page);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-sm);
+      padding: 0.75rem 0.85rem;
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.15s ease;
+      min-height: 48px; /* Touch target */
+    }
+
+    .check-row:hover {
+      background: #ffffff;
+    }
+
+    .check-row input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--primary);
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .check-row span {
+      font-size: 0.82rem;
+      color: var(--text-body);
+      line-height: 1.4;
+    }
+
+    .check-row.completed {
+      opacity: 0.55;
+      text-decoration: line-through;
+    }
+
+    /* ==========================================================================
+       MOBILE DRAWER NAVIGATION (SLIDE-OVER MENU)
+       ========================================================================== */
+    .mobile-drawer-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.4);
+      backdrop-filter: blur(4px);
+      z-index: 500;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+    }
+
+    .mobile-drawer-backdrop.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .mobile-drawer-panel {
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: 280px;
+      background: #ffffff;
+      box-shadow: var(--shadow-modal);
+      z-index: 501;
+      padding: 1.25rem;
+      transform: translateX(100%);
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .mobile-drawer-backdrop.open .mobile-drawer-panel {
+      transform: translateX(0);
+    }
+
+    .drawer-top-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--border-light);
+      margin-bottom: 0.85rem;
+    }
+
+    .drawer-top-row strong {
+      font-size: 0.9rem;
+      color: var(--text-title);
+    }
+
+    .btn-close-drawer {
+      background: transparent;
+      border: none;
+      font-size: 1.25rem;
+      color: var(--text-muted);
+      cursor: pointer;
+      padding: 0.2rem 0.5rem;
+    }
+
+    .drawer-nav-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      overflow-y: auto;
+    }
+
+    .drawer-nav-link {
+      display: block;
+      padding: 0.6rem 0.75rem;
+      font-size: 0.88rem;
+      color: var(--text-body);
+      border-radius: var(--radius-sm);
+      background: var(--bg-page);
+    }
+
+    .drawer-nav-link:hover, .drawer-nav-link.active {
+      color: var(--primary);
+      font-weight: 600;
+      background: var(--primary-subtle);
+      text-decoration: none;
+    }
+
+    /* Footer */
+    .site-footer {
+      border-top: 1px solid var(--border-light);
+      background: #ffffff;
+      padding: 2rem 1.25rem;
+    }
+
+    .footer-content {
+      max-width: 1240px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .footer-left p {
+      font-size: 0.82rem;
+      color: var(--text-body);
+    }
+
+    .footer-left span {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+    }
+
+    .btn-top {
+      background: var(--bg-page);
+      border: 1px solid var(--border-light);
+      color: var(--text-body);
+      font-size: 0.8rem;
+      padding: 0.35rem 0.75rem;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      min-height: 38px;
+    }
+
+    .btn-top:hover {
+      border-color: var(--border-strong);
+    }
+
+    /* Search Modal */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.4);
+      backdrop-filter: blur(4px);
+      z-index: 600;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding-top: 12vh;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.15s ease;
+    }
+
+    .modal-backdrop.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-box {
+      background: #ffffff;
+      border: 1px solid var(--border-medium);
+      border-radius: var(--radius-lg);
+      width: 92%;
+      max-width: 540px;
+      box-shadow: var(--shadow-modal);
+      overflow: hidden;
+    }
+
+    .search-head {
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid var(--border-light);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .search-input {
+      flex: 1;
+      border: none;
+      outline: none;
+      font-size: 0.92rem;
+      color: var(--text-title);
+      background: transparent;
+      font-family: var(--font-sans);
+    }
+
+    .search-res-list {
+      max-height: 300px;
+      overflow-y: auto;
+      padding: 0.4rem;
+      list-style: none;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .search-item {
+      padding: 0.6rem 0.75rem;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 44px;
+    }
+
+    .search-item:hover {
+      background: var(--bg-page);
+    }
+
+    .search-item-title {
+      font-size: 0.84rem;
+      font-weight: 600;
+      color: var(--text-title);
+    }
+
+    .search-item-tag {
+      font-size: 0.7rem;
+      font-family: var(--font-mono);
+      color: var(--primary);
+      background: var(--primary-subtle);
+      padding: 0.1rem 0.35rem;
+      border-radius: 3px;
+    }
+
+    /* Toast */
+    .toast-box {
+      position: fixed;
+      bottom: 2rem;
+      right: 1.5rem;
+      z-index: 1200;
+      background: var(--text-title);
+      color: #ffffff;
+      padding: 0.65rem 1.15rem;
+      border-radius: var(--radius-sm);
+      box-shadow: var(--shadow-modal);
+      font-size: 0.84rem;
+      font-weight: 500;
+      opacity: 0;
+      transform: translateY(15px);
+      pointer-events: none;
+      transition: all 0.2s ease;
+    }
+
+    .toast-box.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .mobile-table-tip {
+      display: none;
+      font-size: 0.74rem;
+      color: var(--text-muted);
+      margin-bottom: 0.45rem;
+    }
+
+    /* ==========================================================================
+       MEDIA QUERIES (MOBILE RESPONSIVE PERFECTION)
+       ========================================================================== */
+    @media (max-width: 980px) {
+      .main-container {
+        grid-template-columns: 1fr;
+        gap: 1.75rem;
+        padding-top: 1.5rem;
+      }
+      .sidebar-nav {
+        display: none;
+      }
+      .mobile-menu-btn {
+        display: flex;
+      }
+      .mobile-table-tip {
+        display: block;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .header-inner {
+        padding: 0 0.85rem;
+      }
+      .brand-title {
+        font-size: 0.88rem;
+        max-width: 210px;
+      }
+      .brand-tag {
+        display: none;
+      }
+      .site-header .btn-arena-link,
+      .site-header .btn-asset-link {
+        display: none;
+      }
+      .search-text-label {
+        display: none;
+      }
+      .search-kbd {
+        display: none;
+      }
+      .search-btn {
+        padding: 0.35rem 0.5rem;
+        width: 34px;
+        height: 34px;
+        justify-content: center;
+      }
+      .hero-clean {
+        padding: 2rem 1rem 1.5rem;
+      }
+      .hero-clean-title {
+        font-size: 1.6rem;
+      }
+      .hero-clean-lead {
+        font-size: 0.92rem;
+      }
+      .hero-actions-group {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .btn-primary-hero, .btn-secondary-hero {
+        justify-content: center;
+        text-align: center;
+        width: 100%;
+      }
+      .chapter-header {
+        padding: 1rem 1.15rem;
+      }
+      .chapter-title {
+        font-size: 1.1rem;
+      }
+      .chapter-body {
+        padding: 1.15rem;
+      }
+      .cards-grid-3, .dirs-grid, .arenas-grid-5, .beyond-grid-clean, .checklist-grid, .ai-quad-grid, .writeup-steps-row {
+        grid-template-columns: 1fr;
+      }
+      .modal-backdrop {
+        padding-top: 6vh;
+      }
+      .modal-box {
+        width: 95%;
+      }
+    }
+  
+    /* ==========================================================================
+       BENTO QUICK DASHBOARD (CHAPTER 00 REFACTORED)
+       ========================================================================== */
+    .bento-dashboard-section {
+      margin-bottom: 2.25rem;
+    }
+
+    .bento-dashboard-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+      padding: 0 0.25rem;
+    }
+
+    .bento-header-badge {
+      display: flex;
+      align-items: center;
+    }
+
+    .bento-header-desc {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .bento-dashboard-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1.15rem;
+    }
+
+    .bento-card {
+      background: #ffffff;
+      border: 1.5px solid #e2e8f0;
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .bento-card:hover {
+      border-color: #cbd5e1;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 16px -4px rgba(15, 23, 42, 0.08);
+    }
+
+    .bento-card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.65rem;
+    }
+
+    .bento-badge {
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      font-family: var(--font-mono);
+    }
+
+    .badge-blue {
+      background: #eff6ff;
+      color: #1d4ed8;
+      border: 1px solid #bfdbfe;
+    }
+
+    .badge-purple {
+      background: #f5f3ff;
+      color: #7c3aed;
+      border: 1px solid #ddd6fe;
+    }
+
+    .badge-green {
+      background: #ecfdf5;
+      color: #059669;
+      border: 1px solid #a7f3d0;
+    }
+
+    .bento-meta {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+    }
+
+    .bento-title {
+      font-size: 0.96rem;
+      font-weight: 700;
+      color: var(--text-title);
+      margin-bottom: 0.45rem;
+      letter-spacing: -0.01em;
+    }
+
+    .bento-text {
+      font-size: 0.8rem;
+      line-height: 1.55;
+      color: var(--text-body);
+      margin-bottom: 0.85rem;
+      flex: 1;
+    }
+
+    .bento-pills-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+    }
+
+    .bento-pill {
+      font-size: 0.68rem;
+      color: #475569;
+      background: #f1f5f9;
+      padding: 0.15rem 0.45rem;
+      border-radius: 4px;
+      border: 1px solid #e2e8f0;
+    }
+
+    /* Bento Video Items */
+    .bento-video-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .bento-video-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.55rem 0.65rem;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      text-decoration: none !important;
+      transition: all 0.15s ease;
+    }
+
+    .bento-video-item:hover {
+      background: #eff6ff;
+      border-color: #93c5fd;
+      transform: translateX(2px);
+    }
+
+    .video-item-left {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      min-width: 0;
+    }
+
+    .play-icon-box {
+      width: 24px;
+      height: 24px;
+      background: #7c3aed;
+      color: #ffffff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.65rem;
+      flex-shrink: 0;
+    }
+
+    .bento-video-item:hover .play-icon-box {
+      background: #6d28d9;
+    }
+
+    .video-info {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+
+    .video-name {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--text-title);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 170px;
+    }
+
+    .video-sub {
+      font-size: 0.68rem;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+    }
+
+    .video-tag {
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: #7c3aed;
+      background: #ede9fe;
+      padding: 0.15rem 0.4rem;
+      border-radius: 4px;
+      flex-shrink: 0;
+    }
+
+    /* Bento Download Items */
+    .bento-downloads-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .bento-dl-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+      padding: 0.5rem 0.65rem;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+    }
+
+    .dl-item-info {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      min-width: 0;
+    }
+
+    .dl-format-tag {
+      font-size: 0.65rem;
+      font-weight: 800;
+      font-family: var(--font-mono);
+      padding: 0.15rem 0.35rem;
+      border-radius: 3px;
+      flex-shrink: 0;
+    }
+
+    .tag-word {
+      background: #eff6ff;
+      color: #1d4ed8;
+      border: 1px solid #bfdbfe;
+    }
+
+    .tag-md {
+      background: #ecfdf5;
+      color: #059669;
+      border: 1px solid #a7f3d0;
+    }
+
+    .dl-texts {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+
+    .dl-filename {
+      font-size: 0.76rem;
+      font-weight: 600;
+      color: var(--text-title);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 135px;
+    }
+
+    .dl-filesize {
+      font-size: 0.66rem;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+    }
+
+    .dl-btn-group {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      flex-shrink: 0;
+    }
+
+    .btn-dl-chip {
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 0.25rem 0.55rem;
+      border-radius: 4px;
+      text-decoration: none !important;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.2rem;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+    }
+
+    .btn-dl-primary {
+      background: #2563eb;
+      color: #ffffff !important;
+    }
+
+    .btn-dl-primary:hover {
+      background: #1d4ed8;
+    }
+
+    .btn-dl-secondary {
+      background: #eff6ff;
+      color: #1d4ed8 !important;
+      border: 1px solid #bfdbfe;
+    }
+
+    .btn-dl-secondary:hover {
+      background: #dbeafe;
+    }
+
+    .btn-dl-subtle {
+      background: #ffffff;
+      color: #475569 !important;
+      border: 1px solid #cbd5e1;
+    }
+
+    .btn-dl-subtle:hover {
+      color: #0f172a !important;
+      border-color: #94a3b8;
+    }
+
+    /* Tertiary Hero button */
+    .btn-tertiary-hero {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      background: transparent;
+      color: var(--primary) !important;
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 0.55rem 0.85rem;
+      border-radius: var(--radius-sm);
+      text-decoration: none !important;
+      transition: all 0.15s ease;
+    }
+
+    .btn-tertiary-hero:hover {
+      background: #eff6ff;
+      text-decoration: underline !important;
+    }
+
+    @media (max-width: 980px) {
+      .bento-dashboard-grid {
+        grid-template-columns: 1fr;
+        gap: 0.85rem;
+      }
+      .video-name {
+        max-width: 220px;
+      }
+      .dl-filename {
+        max-width: 180px;
+      }
+    }
+
+  
+    /* ==========================================================================
+       HIGH-END AGENCY HERO & VISUAL ENHANCEMENTS
+       ========================================================================== */
+    .hero-clean {
+      position: relative;
+      background: radial-gradient(circle at 50% -20%, rgba(37,99,235,0.08) 0%, rgba(248,250,252,0) 75%), #ffffff;
+      border-bottom: 1px solid #e2e8f0;
+      padding: 3.5rem 1.25rem 2.75rem;
+      overflow: hidden;
+    }
+
+    .hero-clean::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: 
+        linear-gradient(to right, rgba(226, 232, 240, 0.4) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(226, 232, 240, 0.4) 1px, transparent 1px);
+      background-size: 32px 32px;
+      pointer-events: none;
+      mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, #000 30%, transparent 100%);
+      -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, #000 30%, transparent 100%);
+      opacity: 0.85;
+      z-index: 0;
+    }
+
+    .hero-clean-inner {
+      position: relative;
+      z-index: 1;
+      max-width: 960px;
+      margin: 0 auto;
+      text-align: left;
+    }
+
+    .hero-badge-strip {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.15rem;
+    }
+
+    .hero-shield-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      color: #1d4ed8;
+      font-size: 0.76rem;
+      font-weight: 700;
+      padding: 0.25rem 0.65rem;
+      border-radius: 999px;
+      font-family: var(--font-mono);
+      letter-spacing: 0.02em;
+    }
+
+    .hero-status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: #ecfdf5;
+      border: 1px solid #a7f3d0;
+      color: #065f46;
+      font-size: 0.74rem;
+      font-weight: 600;
+      padding: 0.25rem 0.65rem;
+      border-radius: 999px;
+    }
+
+    .pulse-dot {
+      width: 7px;
+      height: 7px;
+      background: #10b981;
+      border-radius: 50%;
+      display: inline-block;
+      box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.25);
+    }
+
+    .hero-clean-title {
+      font-size: clamp(2rem, 4.5vw, 2.75rem);
+      font-weight: 900;
+      color: var(--text-title);
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+      margin-bottom: 0.45rem;
+    }
+
+    .hero-title-sub {
+      color: #2563eb;
+      font-weight: 800;
+      display: inline-block;
+    }
+
+    .hero-subtitle-tagline {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #334155;
+      margin-bottom: 1.15rem;
+      letter-spacing: -0.01em;
+    }
+
+    .hero-clean-lead {
+      font-size: 0.98rem;
+      line-height: 1.7;
+      color: var(--text-body);
+      margin-bottom: 1.75rem;
+      max-width: 860px;
+    }
+
+    /* Domain Overview Strip (Student-Centric Cybersecurity & CTF Pillars) */
+    .hero-metrics-strip {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.85rem;
+      margin-bottom: 2rem;
+      padding: 1rem 1.15rem;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(8px);
+      border: 1.5px solid #e2e8f0;
+      border-radius: var(--radius-md);
+      box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04);
+    }
+
+    .hero-metric-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+      border-right: 1px solid #f1f5f9;
+      padding-right: 0.75rem;
+    }
+
+    .hero-metric-item:last-child {
+      border-right: none;
+      padding-right: 0;
+    }
+
+    .metric-domain-title {
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: #0f172a;
+      letter-spacing: -0.01em;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .metric-label {
+      font-size: 0.75rem;
+      color: #64748b;
+      line-height: 1.45;
+    }
+
+    /* Button-in-Button Trailing Icon Pill */
+    .btn-hero-icon-pill {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.22);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      font-weight: 800;
+      margin-left: 0.25rem;
+      transition: transform 0.15s ease;
+    }
+
+    .btn-primary-hero:hover .btn-hero-icon-pill {
+      transform: translate(2px, -2px);
+    }
+
+    .btn-secondary-hero .btn-hero-icon-pill {
+      background: #f1f5f9;
+      color: #475569;
+    }
+
+    .btn-secondary-hero:hover .btn-hero-icon-pill {
+      transform: translateY(2px);
+    }
+
+    /* Bento Card Top Accents */
+    /* Bento Card Clean Uniform Borders */
+    .bento-card-concept,
+    .bento-card-videos,
+    .bento-card-downloads {
+      border-top: 1.5px solid #e2e8f0;
+    }
+
+    @media (max-width: 768px) {
+      .hero-metrics-strip {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.75rem;
+      }
+      .hero-metric-item:nth-child(2) {
+        border-right: none;
+      }
+      .hero-subtitle-tagline {
+        font-size: 1rem;
+      }
+    }
+
+  
+    /* ==========================================================================
+       ELEVATED HACKER AESTHETICS & OPTICAL POLISH SPECIFICATION
+       ========================================================================== */
+    :root {
+      --bg-page: #f8fafc;
+      --bg-card: rgba(255, 255, 255, 0.96);
+      --bg-card-hover: #ffffff;
+      --bg-subtle: #f1f5f9;
+      --bg-active: #e2e8f0;
+
+      --border-subtle: rgba(226, 232, 240, 0.85);
+      --border-medium: #cbd5e1;
+      --border-strong: #94a3b8;
+      --border-accent: #2563eb;
+
+      --text-title: #090d16;
+      --text-body: #1e293b;
+      --text-muted: #64748b;
+      --text-sub: #475569;
+
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --primary-subtle: #eff6ff;
+      --primary-border: #bfdbfe;
+
+      --card-radius: 12px;
+      --card-radius-sm: 8px;
+      --card-radius-pill: 9999px;
+
+      --shadow-ambient: 0 1px 3px 0 rgba(15, 23, 42, 0.04), 0 1px 2px -1px rgba(15, 23, 42, 0.04);
+      --shadow-spotlight: 0 16px 32px -10px rgba(15, 23, 42, 0.08), 0 4px 10px -2px rgba(15, 23, 42, 0.04);
+      --highlight-bevel: inset 0 1px 0 0 rgba(255, 255, 255, 0.95);
+    }
+
+    body {
+      background-color: var(--bg-page);
+      background-image: 
+        radial-gradient(rgba(148, 163, 184, 0.12) 1px, transparent 1px);
+      background-size: 24px 24px;
+    }
+
+    /* Precision Crosshair Markers on Major Containers */
+    .crosshair-container {
+      position: relative;
+    }
+    .crosshair-container::before,
+    .crosshair-container::after {
+      content: "+";
+      position: absolute;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: #94a3b8;
+      line-height: 1;
+      pointer-events: none;
+    }
+    .crosshair-container::before {
+      top: -6px;
+      left: -6px;
+    }
+    .crosshair-container::after {
+      bottom: -6px;
+      right: -6px;
+    }
+
+    /* Monospace Terminal Eyebrow System */
+    .mono-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .mono-eyebrow::before {
+      content: ">_";
+      color: var(--primary);
+      font-weight: 800;
+    }
+
+    /* Unified Chapter Headers with Stage Accents */
+    .chapter-card {
+      position: relative;
+      background: var(--bg-card);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--card-radius);
+      box-shadow: var(--shadow-ambient), var(--highlight-bevel);
+      margin-bottom: 2.25rem;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .chapter-card:hover {
+      border-color: var(--border-medium);
+      box-shadow: var(--shadow-spotlight), var(--highlight-bevel);
+    }
+
+    /* 4-Stage Stepper Progression Nodes (闯关式阶梯) */
+    .quest-stepper {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      margin: 1.5rem 0 1rem;
+    }
+
+    .quest-node {
+      background: #ffffff;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--card-radius-sm);
+      padding: 1.15rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: var(--shadow-ambient), var(--highlight-bevel);
+      position: relative;
+      transition: all 0.2s ease;
+    }
+
+    .quest-node:hover {
+      border-color: #93c5fd;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 16px -4px rgba(37, 99, 235, 0.08);
+    }
+
+    .quest-node-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.65rem;
+    }
+
+    .quest-level-tag {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      font-weight: 800;
+      color: var(--primary);
+      background: var(--primary-subtle);
+      border: 1px solid var(--primary-border);
+      padding: 0.15rem 0.45rem;
+      border-radius: 4px;
+    }
+
+    .quest-target-desc {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+    }
+
+    .quest-title {
+      font-size: 0.94rem;
+      font-weight: 700;
+      color: var(--text-title);
+      margin-bottom: 0.45rem;
+    }
+
+    .quest-summary {
+      font-size: 0.78rem;
+      color: var(--text-sub);
+      line-height: 1.55;
+      margin-bottom: 0.85rem;
+    }
+
+    .quest-tasks-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      font-size: 0.74rem;
+      color: var(--text-body);
+      border-top: 1px solid #f1f5f9;
+      padding-top: 0.65rem;
+      margin-bottom: 0.85rem;
+    }
+
+    .quest-tasks-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.35rem;
+      line-height: 1.4;
+    }
+
+    .quest-tasks-list li::before {
+      content: "•";
+      color: var(--primary);
+      font-weight: bold;
+    }
+
+    .quest-jump-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--primary);
+      text-decoration: none !important;
+      font-family: var(--font-mono);
+    }
+    .quest-jump-link:hover {
+      text-decoration: underline !important;
+    }
+
+    /* Horizontal Scroll Gallery Indicator (Mobile) */
+    .mobile-gallery-cue {
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.35rem 0.65rem;
+      margin-bottom: 0.75rem;
+      background: #f1f5f9;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+    }
+
+    /* Mobile Bottom Floating Thumb Bar (Unified Light Frosted Glass Aesthetic) */
+    .mobile-bottom-bar {
+      display: none;
+      position: fixed;
+      bottom: 1rem;
+      left: 1rem;
+      right: 1rem;
+      z-index: 450;
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(226, 232, 240, 0.95);
+      border-radius: 999px;
+      box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.08), 0 4px 10px -2px rgba(15, 23, 42, 0.04);
+      padding: 0.38rem 0.65rem;
+      align-items: center;
+      justify-content: space-between;
+      transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease;
+    }
+
+    .mobile-bottom-bar.hidden {
+      transform: translateY(calc(100% + 2rem));
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .thumb-nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #334155;
+      padding-left: 0.2rem;
+      text-decoration: none !important;
+      flex-shrink: 0;
+    }
+
+    .thumb-brand-shield {
+      font-size: 0.95rem;
+      line-height: 1;
+    }
+
+    .thumb-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      flex: 1;
+      justify-content: flex-end;
+    }
+
+    .thumb-btn-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 0.36rem 0.75rem;
+      border-radius: 999px;
+      text-decoration: none !important;
+      white-space: nowrap;
+      transition: all 0.15s ease;
+    }
+
+    .thumb-btn-primary {
+      background: #2563eb;
+      color: #ffffff !important;
+      box-shadow: 0 2px 6px rgba(37, 99, 235, 0.25);
+    }
+
+    .thumb-btn-primary:hover {
+      background: #1d4ed8;
+    }
+
+    .thumb-btn-ghost {
+      background: #f1f5f9;
+      color: #334155 !important;
+      border: 1px solid #e2e8f0;
+    }
+
+    .thumb-btn-ghost:hover {
+      background: #e2e8f0;
+      color: #0f172a !important;
+    }
+
+    .thumb-checklist-stat {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: #2563eb;
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      padding: 0.1rem 0.45rem;
+      border-radius: 999px;
+      font-weight: 700;
+    }
+
+    /* Covenant Card in Section 06 */
+    .covenant-seal-box {
+      border: 1.5px solid #cbd5e1;
+      border-top: 4px solid #0f172a;
+      background: #ffffff;
+      border-radius: var(--card-radius-sm);
+      padding: 1.5rem;
+      position: relative;
+    }
+
+    .covenant-seal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px dashed #e2e8f0;
+    }
+
+    /* RESPONSIVE SCENARIO RECONSTRUCTION */
+    @media (max-width: 980px) {
+      .quest-stepper {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .site-footer {
+        padding-bottom: 115px !important;
+      }
+      .mobile-bottom-bar {
+        display: flex;
+      }
+      .mobile-gallery-cue {
+        display: flex;
+      }
+
+      /* Horizontal Magnetic Scroll-Snap for 5 Direction Cards */
+      .dirs-grid {
+        display: flex !important;
+        overflow-x: auto !important;
+        scroll-snap-type: x mandatory !important;
+        -webkit-overflow-scrolling: touch !important;
+        gap: 0.85rem !important;
+        padding: 0.25rem 0.25rem 1.25rem !important;
+        scroll-padding: 0.5rem !important;
+      }
+
+      .dir-card-clean {
+        min-width: 84vw !important;
+        max-width: 330px !important;
+        flex-shrink: 0 !important;
+        scroll-snap-align: center !important;
+        min-height: 480px !important;
+      }
+
+      /* Horizontal Magnetic Scroll-Snap for 5 Arena Cards */
+      .arenas-grid-5 {
+        display: flex !important;
+        overflow-x: auto !important;
+        scroll-snap-type: x mandatory !important;
+        -webkit-overflow-scrolling: touch !important;
+        gap: 0.85rem !important;
+        padding: 0.25rem 0.25rem 1.25rem !important;
+        scroll-padding: 0.5rem !important;
+      }
+
+      .arenas-grid-5 > div {
+        min-width: 78vw !important;
+        max-width: 310px !important;
+        flex-shrink: 0 !important;
+        scroll-snap-align: center !important;
+      }
+
+      /* Quest Stepper on Mobile (Compact Stack) */
+      .quest-stepper {
+        grid-template-columns: 1fr !important;
+        gap: 0.75rem !important;
+      }
+
+      /* Extra bottom padding on main container so floating bar does not obstruct footer */
+      .main-container {
+        padding-bottom: 6.5rem !important;
+      }
+    }
+
+  
+    /* ==========================================================================
+       GALLERY & SLIDER NAVIGATION SYSTEM (DESKTOP & MOBILE COHESIVE)
+       ========================================================================== */
+    .gallery-nav-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.85rem;
+      padding: 0.45rem 0.85rem;
+      background: #ffffff;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.03);
+    }
+
+    .gallery-nav-left {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      flex-wrap: wrap;
+    }
+
+    .gallery-badge-pill {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 700;
+      background: #eff6ff;
+      color: #2563eb;
+      border: 1px solid #bfdbfe;
+      padding: 0.15rem 0.55rem;
+      border-radius: 999px;
+      letter-spacing: 0.02em;
+    }
+
+    .gallery-title-hint {
+      font-size: 0.84rem;
+      font-weight: 700;
+      color: #1e293b;
+    }
+
+    .gallery-nav-controls {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+    }
+
+    .gallery-swipe-tip {
+      font-size: 0.72rem;
+      color: #64748b;
+      margin-right: 0.35rem;
+    }
+
+    .gallery-arrow-btn {
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      color: #334155;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.15rem;
+      font-weight: 700;
+      line-height: 1;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      user-select: none;
+    }
+
+    .gallery-arrow-btn:hover {
+      background: #2563eb;
+      color: #ffffff;
+      border-color: #2563eb;
+      box-shadow: 0 2px 6px rgba(37, 99, 235, 0.25);
+    }
+
+    /* Cohesive Horizontal Scroll Tracks on Desktop & Mobile */
+    .dirs-grid {
+      display: flex !important;
+      overflow-x: auto !important;
+      scroll-snap-type: x mandatory !important;
+      -webkit-overflow-scrolling: touch !important;
+      gap: 1.25rem !important;
+      padding: 0.25rem 0.25rem 1.25rem !important;
+      scrollbar-width: thin !important;
+      scrollbar-color: #cbd5e1 transparent !important;
+    }
+
+    .dirs-grid::-webkit-scrollbar {
+      height: 6px;
+    }
+    .dirs-grid::-webkit-scrollbar-track {
+      background: #f1f5f9;
+      border-radius: 999px;
+    }
+    .dirs-grid::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 999px;
+    }
+
+    .dir-card-clean {
+      min-width: 350px !important;
+      max-width: 380px !important;
+      flex-shrink: 0 !important;
+      scroll-snap-align: start !important;
+    }
+
+    .arenas-grid-5 {
+      display: flex !important;
+      overflow-x: auto !important;
+      scroll-snap-type: x mandatory !important;
+      -webkit-overflow-scrolling: touch !important;
+      gap: 1.15rem !important;
+      padding: 0.25rem 0.25rem 1.25rem !important;
+      scrollbar-width: thin !important;
+      scrollbar-color: #cbd5e1 transparent !important;
+    }
+
+    .arenas-grid-5::-webkit-scrollbar {
+      height: 6px;
+    }
+    .arenas-grid-5::-webkit-scrollbar-track {
+      background: #f1f5f9;
+      border-radius: 999px;
+    }
+    .arenas-grid-5::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 999px;
+    }
+
+    .arenas-grid-5 > div {
+      min-width: 285px !important;
+      max-width: 310px !important;
+      flex-shrink: 0 !important;
+      scroll-snap-align: start !important;
+    }
+
+    @media (max-width: 768px) {
+      .dir-card-clean {
+        min-width: 82vw !important;
+        max-width: 325px !important;
+      }
+      .arenas-grid-5 > div {
+        min-width: 78vw !important;
+        max-width: 300px !important;
+      }
+    }
+
+        /* Backdropped Technical Stack Cards (Snug fit & Transparent background embedding) */
+    .tool-card {
+      position: relative;
+      background: #ffffff;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--card-radius);
+      padding: 1.25rem;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+      box-shadow: var(--shadow-ambient);
+      transition: all 0.25s ease;
+    }
+
+    .tool-card:hover {
+      transform: translateY(-2px);
+      border-color: var(--primary-border);
+      box-shadow: 0 10px 24px -4px rgba(15, 23, 42, 0.08);
+    }
+
+    .tool-card-bg-mask {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .tool-card-bg-mask img {
+      position: absolute;
+      right: -20px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 320px;
+      max-width: 88%;
+      height: 240px;
+      max-height: 95%;
+      object-fit: contain;
+      object-position: right center;
+      opacity: 0.28;
+      filter: saturate(1.15);
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .tool-card:hover .tool-card-bg-mask img {
+      opacity: 0.40;
+      transform: translateY(-50%) scale(1.05);
+    }
+
+    .tool-card-content {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+      width: 100%;
+    }
+
+
+
+    /* AI Horizontal Slider Track & Backdropped Cards */
+    .ai-slider-track {
+      display: flex;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      gap: 1rem;
+      padding-bottom: 0.85rem;
+      scrollbar-width: thin;
+      scrollbar-color: #cbd5e1 transparent;
+    }
+
+    .ai-slider-track::-webkit-scrollbar {
+      height: 6px;
+    }
+    .ai-slider-track::-webkit-scrollbar-track {
+      background: #f1f5f9;
+      border-radius: 999px;
+    }
+    .ai-slider-track::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 999px;
+    }
+
+    .ai-col-item {
+      position: relative;
+      min-width: 275px;
+      max-width: 300px;
+      flex-shrink: 0;
+      scroll-snap-align: start;
+      background: #ffffff;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--card-radius-sm);
+      padding: 1rem;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.03);
+      transition: all 0.22s ease;
+    }
+
+    .ai-col-item:hover {
+      border-color: var(--primary-border);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px -2px rgba(37, 99, 235, 0.08);
+    }
+
+    .ai-card-bg-mask {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 80px;
+      overflow: hidden;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .ai-card-bg-mask img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.16;
+    }
+
+    .ai-card-bg-mask::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.95) 85%, #ffffff 100%);
+    }
+
+    .ai-col-content {
+      position: relative;
+      z-index: 1;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    @media (max-width: 768px) {
+      .ai-col-item {
+        min-width: 78vw !important;
+        max-width: 295px !important;
+      }
+    }
+
+
+
+    /* Chapter 05 Industrial Cards with Backdrops */
+    .beyond-grid-clean {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.25rem;
+    }
+    @media (max-width: 768px) {
+      .beyond-grid-clean {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .beyond-unit {
+      position: relative;
+      background: #ffffff;
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-md);
+      padding: 1.15rem 1.25rem 1.1rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 0.65rem;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+      transition: all 0.22s ease;
+    }
+    .beyond-unit:hover {
+      transform: translateY(-2px);
+      border-color: var(--primary-border);
+      box-shadow: 0 8px 20px -4px rgba(15, 23, 42, 0.08);
+    }
+    .beyond-unit-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+    .beyond-tag-badge {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: var(--primary);
+      background: var(--primary-subtle);
+      border: 1px solid var(--primary-border);
+      padding: 0.12rem 0.45rem;
+      border-radius: var(--radius-sm);
+    }
+    .beyond-sub-badge {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+    .beyond-unit h4 {
+      font-size: 0.98rem;
+      font-weight: 700;
+      color: var(--text-title);
+      margin: 0;
+    }
+    .beyond-unit p {
+      font-size: 0.82rem;
+      color: var(--text-body);
+      line-height: 1.55;
+      margin: 0;
+    }
+    .beyond-chips-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-top: 0.2rem;
+      padding-top: 0.5rem;
+      border-top: 1px dashed var(--border-light);
+    }
+    .beyond-chip {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: #334155;
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
+      padding: 0.12rem 0.48rem;
+      border-radius: 999px;
+    }
+    
+  
+    /* --- Stage Stepper & Panels Consolidated CSS --- */
+    .stage-stepper-bar {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.65rem;
+      margin-bottom: 1.5rem;
+      background: #f8fafc;
+      padding: 0.45rem;
+      border-radius: var(--card-radius);
+      border: 1px solid var(--border-subtle);
+    }
+    @media (max-width: 860px) {
+      .stage-stepper-bar {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.5rem;
+      }
+    }
+    
+
+    .stage-step-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      background: transparent;
+      border: 1.5px solid transparent;
+      padding: 0.75rem 0.95rem;
+      border-radius: var(--card-radius-sm);
+      cursor: pointer;
+      text-align: left;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .stage-step-btn:hover {
+      background: #ffffff;
+      border-color: #e2e8f0;
+    }
+    .stage-step-btn.active {
+      background: #ffffff;
+      border-color: #bfdbfe;
+      box-shadow: 0 4px 14px -2px rgba(37, 99, 235, 0.1);
+    }
+    .stage-step-btn .step-num {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      font-weight: 800;
+      color: var(--text-muted);
+      background: #e2e8f0;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      transition: all 0.2s;
+    }
+    .stage-step-btn.active .step-num {
+      color: #ffffff;
+      background: var(--primary);
+    }
+    .stage-step-btn .step-info {
+      display: flex;
+      flex-direction: column;
+      gap: 0.15rem;
+    }
+    .stage-step-btn .step-name {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--text-body);
+      transition: color 0.2s;
+    }
+    .stage-step-btn.active .step-name {
+      color: var(--primary);
+    }
+    .stage-step-btn .step-badge {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+    }
+
+    .stage-panel {
+      animation: fadeInStage 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    @keyframes fadeInStage {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .stage-panel-intro {
+      background: transparent;
+      border: none;
+      padding: 0.5rem 0 1.25rem;
+      margin-bottom: 1rem;
+    }
+    .stage-panel-meta {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--primary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.35rem;
+    }
+    .stage-panel-intro h3 {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--text-title);
+      margin-bottom: 0.45rem;
+      letter-spacing: -0.015em;
+    }
+    .stage-panel-intro p {
+      font-size: 0.92rem;
+      color: var(--text-muted);
+      margin: 0;
+      line-height: 1.6;
+    }
+
+    /* Accordion for Collapsible Resources */
+    .res-accordion {
+      margin-top: 0.85rem;
+      border-top: 1px dashed #e2e8f0;
+      padding-top: 0.65rem;
+    }
+    .res-accordion-summary {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--primary);
+      list-style: none;
+      user-select: none;
+      padding: 0.45rem 0.75rem;
+      border-radius: 6px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      transition: all 0.18s ease;
+    }
+    .res-accordion-summary::-webkit-details-marker {
+      display: none;
+    }
+    .res-accordion-summary:hover {
+      background: #eff6ff;
+      border-color: #bfdbfe;
+    }
+    .res-accordion-summary .acc-chevron {
+      transition: transform 0.2s ease;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+    .res-accordion[open] .res-accordion-summary .acc-chevron {
+      transform: rotate(180deg);
+    }
+    .res-accordion-body {
+      margin-top: 0.65rem;
+    }
+    .writeup-accordion {
+      margin-top: 1rem;
+      border-top: none;
+      padding-top: 0;
+    }
+
+    /* AI Grid Clean (Desktop 2x2, Mobile 1-col) */
+    .ai-grid-clean {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+    }
+    @media (max-width: 768px) {
+      .ai-grid-clean {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Direction Cards Tabbed (Always Single Card View) */
+    .dirs-grid-tabbed {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.25rem;
+    }
+    .dirs-grid-tabbed .dir-card-clean {
+      min-width: 0 !important;
+      max-width: 100% !important;
+      width: 100% !important;
+      min-height: auto;
+      padding: 1.5rem 1.6rem 1.4rem;
+    }
+    @media (max-width: 768px) {
+      .dirs-grid-tabbed .dir-card-clean {
+        padding: 1.25rem 1.15rem 1.15rem;
+      }
+    }
+
+    /* Clean Arenas Grid */
+    .arenas-grid-clean {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+    }
+    @media (max-width: 900px) {
+      .arenas-grid-clean {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    @media (max-width: 560px) {
+      .arenas-grid-clean {
+        grid-template-columns: 1fr;
+      }
+    }
+    @media (max-width: 640px) {
+      .arenas-grid-clean {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Stage Navigation Footer */
+    .stage-nav-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 1.75rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid var(--border-subtle);
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+    .stage-step-hint {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+    }
+    .stage-nav-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.55rem 1.05rem;
+      font-size: 0.82rem;
+      font-weight: 600;
+      border-radius: var(--card-radius-sm);
+      cursor: pointer;
+      border: 1px solid var(--border-subtle);
+      background: #ffffff;
+      color: var(--text-body);
+      text-decoration: none !important;
+      transition: all 0.18s ease;
+    }
+    .stage-nav-btn:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+      background: #eff6ff;
+    }
+    .stage-nav-btn.primary {
+      background: var(--primary);
+      color: #ffffff !important;
+      border-color: var(--primary);
+      box-shadow: 0 2px 8px rgba(37, 99, 235, 0.2);
+    }
+    .stage-nav-btn.primary:hover {
+      background: var(--primary-hover);
+    }
+
+    /* Sidebar Sub-list */
+    .sidebar-sub-list {
+      list-style: none;
+      padding: 0.35rem 0 0.35rem 0.85rem;
+      margin: 0.25rem 0 0.5rem 0.5rem;
+      border-left: 1.5px solid #e2e8f0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+    .sidebar-sub-btn {
+      background: transparent;
+      border: none;
+      padding: 0.2rem 0.45rem;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      cursor: pointer;
+      border-radius: 4px;
+      text-align: left;
+      width: 100%;
+      transition: all 0.15s;
+    }
+    .sidebar-sub-btn:hover {
+      color: var(--primary);
+      background: #f1f5f9;
+    }
+    .sidebar-sub-btn.active {
+      color: var(--primary);
+      font-weight: 700;
+      background: #eff6ff;
+    }
+
+    /* Drawer Stage Chips */
+    .drawer-stage-chips {
+      display: flex;
+      gap: 0.35rem;
+      padding: 0.4rem 0.5rem 0.2rem 1.5rem;
+    }
+    .drawer-stage-chip {
+      background: #f1f5f9;
+      border: 1px solid #e2e8f0;
+      border-radius: 4px;
+      font-size: 0.72rem;
+      font-family: var(--font-mono);
+      padding: 0.2rem 0.45rem;
+      color: #475569;
+      cursor: pointer;
+    }
+    .drawer-stage-chip:hover {
+      background: #eff6ff;
+      color: var(--primary);
+    }
+    
+
+    
+    /* Covenant Duo Cards Layout (Replacing Timeline Dots) */
+    .covenant-grid-duo {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.25rem;
+    }
+    @media (max-width: 768px) {
+      .covenant-grid-duo {
+        grid-template-columns: 1fr;
+      }
+    }
+    .covenant-card-spirit {
+      background: #ffffff;
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      box-shadow: var(--shadow-card);
+      transition: all 0.2s ease;
+    }
+    .covenant-card-spirit:hover {
+      border-color: var(--border-medium);
+      transform: translateY(-1px);
+    }
+    .covenant-card-alert {
+      background: #fff5f5;
+      border: 1px solid #fecaca;
+      border-left: 4px solid #dc2626;
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      box-shadow: var(--shadow-card);
+      transition: all 0.2s ease;
+    }
+    .covenant-card-alert:hover {
+      transform: translateY(-1px);
+    }
+    .covenant-card-head {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      margin-bottom: 0.85rem;
+    }
+    .covenant-card-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text-title);
+      margin: 0;
+    }
+    .covenant-card-title.text-red {
+      color: #991b1b;
+    }
+    .covenant-card-body {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.65;
+      margin: 0;
+    }
+    .covenant-card-body.text-red-sub {
+      color: #7f1d1d;
+    }
+    /* --- De-cardified Rules Section CSS --- */
+    .rules-section-clean {
+      margin: 2.5rem 0 2rem;
+      padding: 0 0.5rem;
+    }
+    .rules-header-clean {
+      margin-bottom: 1.5rem;
+    }
+    .rules-badge-row {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+    .badge-red-covenant {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 800;
+      color: #dc2626;
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      padding: 0.15rem 0.5rem;
+      border-radius: 4px;
+      letter-spacing: 0.04em;
+    }
+    .rules-meta-txt {
+      font-size: 0.76rem;
+      color: var(--text-muted);
+    }
+    .rules-title-clean {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--text-title);
+      margin-bottom: 0.35rem;
+      letter-spacing: -0.01em;
+    }
+    .rules-desc-clean {
+      font-size: 0.84rem;
+      color: var(--text-sub);
+      margin: 0;
+    }
+
+    .covenant-clauses-list {
+      position: relative;
+      padding-left: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    .covenant-clauses-list::before {
+      content: "";
+      position: absolute;
+      top: 8px;
+      bottom: 8px;
+      left: 6px;
+      width: 2px;
+      background: #e2e8f0;
+    }
+    .covenant-clause-item {
+      position: relative;
+    }
+    .clause-dot {
+      position: absolute;
+      left: -1.5rem;
+      top: 5px;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: #ffffff;
+      border: 2.5px solid #94a3b8;
+      z-index: 1;
+    }
+    .clause-dot.dot-red {
+      border-color: #dc2626;
+      background: #fef2f2;
+      box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.15);
+    }
+    .clause-heading {
+      font-size: 0.98rem;
+      font-weight: 700;
+      color: var(--text-title);
+      margin-bottom: 0.35rem;
+    }
+    .clause-text {
+      font-size: 0.84rem;
+      color: var(--text-body);
+      line-height: 1.6;
+      margin: 0;
+    }
+    .covenant-redline-active {
+      background: #fffafa;
+      border: 1px solid #fee2e2;
+      border-left: 3.5px solid #dc2626;
+      border-radius: var(--card-radius-sm);
+      padding: 1rem 1.25rem;
+      margin-left: -0.5rem;
+    }
+    .covenant-redline-active .clause-dot {
+      left: -1rem;
+    }
+    .redline-alert-header {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      margin-bottom: 0.45rem;
+    }
+    .redline-law-badge {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      font-weight: 800;
+      background: #dc2626;
+      color: #ffffff;
+      padding: 0.15rem 0.45rem;
+      border-radius: 4px;
+    }
+    .text-red {
+      color: #991b1b !important;
+      margin: 0;
+    }
+    .text-red-sub {
+      color: #7f1d1d !important;
+    }
+
+    /* Checklist Badge Header */
+    .checklist-status-badge {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 800;
+      color: #2563eb;
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      padding: 0.2rem 0.55rem;
+      border-radius: 4px;
+      letter-spacing: 0.04em;
+      margin-right: 8px;
+    }
+
+    /* Flat AI Matrix CSS (No nested white boxes) */
+    .ai-accordion-container {
+      margin-top: 1.25rem;
+    }
+    .ai-main-accordion {
+      border: 1px solid #e2e8f0;
+      border-radius: var(--card-radius);
+      background: #f8fafc;
+      padding: 0.5rem 0.85rem;
+    }
+    .ai-accordion-trigger {
+      background: transparent !important;
+      border: none !important;
+      padding: 0.4rem 0.2rem !important;
+    }
+    .ai-flat-matrix {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      padding: 0.5rem 0.2rem;
+      border-top: 1px dashed #e2e8f0;
+      margin-top: 0.75rem;
+    }
+    .ai-flat-group {
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid #f1f5f9;
+    }
+    .ai-flat-group:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+    .ai-flat-title {
+      font-size: 0.86rem;
+      font-weight: 700;
+      color: var(--text-title);
+      margin-bottom: 0.45rem;
+    }
+    .ai-flat-note {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-top: 0.4rem;
+      line-height: 1.5;
+    }
+
+    /* Mobile 2x2 Stepper tuning */
+    @media (max-width: 768px) {
+      .stage-stepper-bar {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 0.45rem !important;
+      }
+      .stage-step-btn {
+        padding: 0.55rem 0.65rem !important;
+        gap: 0.45rem !important;
+      }
+      .stage-step-btn .step-num {
+        font-size: 0.76rem !important;
+        padding: 0.15rem 0.35rem !important;
+      }
+      .stage-step-btn .step-name {
+        font-size: 0.78rem !important;
+      }
+      .stage-step-btn .step-badge {
+        font-size: 0.65rem !important;
+      }
+    }
+    
+
+    /* ==========================================================================
+       BREATHING ROOM & PROXIMITY RHYTHM OPTIMIZATIONS
+       ========================================================================== */
+    /* 1. Header scroll offset & Chapter isolation */
+    html {
+      scroll-padding-top: 104px !important;
+    }
+
+    #section-stages {
+      padding-top: 4.5rem !important;
+      padding-bottom: 2.5rem !important;
+    }
+
+    #section-rules,
+    #section-check {
+      padding-top: 4.5rem !important;
+      padding-bottom: 4.5rem !important;
+      border-top: 1px solid var(--border-light) !important;
+    }
+
+    /* 2. Distinct pacing within 01 Stages */
+    .unboxed-section-header {
+      margin-bottom: 2.25rem !important;
+    }
+
+    /* Stepper bar separated from content below */
+    .stage-stepper-bar {
+      margin-bottom: 2.75rem !important;
+    }
+
+    /* Stage Panel Intro decoupled */
+    .stage-panel-intro {
+      margin-bottom: 2rem !important;
+    }
+
+    /* 3. Stage 1 cards unboxing & expansion */
+    .cards-grid-3 {
+      gap: 1.5rem !important;
+      margin-bottom: 2rem !important;
+    }
+
+    .tool-card {
+      padding: 1.75rem !important;
+      border-radius: var(--radius-lg) !important;
+    }
+
+    /* Strip gray quote box & left blue/medium line from target box */
+    .tool-target-box {
+      background: transparent !important;
+      border-left: none !important;
+      padding: 0 !important;
+      margin: 0.85rem 0 1.25rem 0 !important;
+      color: var(--text-body) !important;
+      line-height: 1.65 !important;
+      font-size: 0.88rem !important;
+    }
+
+    /* Accordion in cards */
+    .tool-card .res-accordion {
+      margin-top: 0.5rem !important;
+      border-top: 1px dashed var(--border-light) !important;
+      padding-top: 0.75rem !important;
+    }
+
+    /* AI box spacing */
+    .ai-accordion-container {
+      margin-top: 1.5rem !important;
+      margin-bottom: 2.75rem !important;
+    }
+
+    /* 4. Footer navigation clearance */
+    .stage-nav-footer {
+      margin-top: 2.75rem !important;
+      padding-top: 1.75rem !important;
+    }
+
+    /* Stage 2, 3, 4 rhythmic spacing */
+    .tab-bar-clean {
+      margin-bottom: 1.5rem !important;
+    }
+    .dirs-grid-tabbed {
+      margin-bottom: 2rem !important;
+    }
+    .arenas-grid-clean {
+      margin-bottom: 2rem !important;
+    }
+    .beyond-grid-clean {
+      margin-bottom: 2rem !important;
+    }
+
+    /* ==========================================================================
+       移动端彻底重做：深灰底板 + 四大独立白岛（边界刀刻般清晰）
+       ========================================================================== */
+    @media (max-width: 768px) {
+
+      /* 1. 手机底层画布统一加深为冷灰底板，用来衬托四大白色模块岛屿 */
+      body {
+        background-color: #e8eef5 !important;
+        background-image: none !important; /* 手机上去掉显得脏乱的点阵背景 */
+      }
+
+      /* 2. 首屏 Hero + 00 破冰：作为第一个纯白大岛屿，底部有明确圆角和阴影边界 */
+      #section-intro,
+      .first-screen-container {
+        min-height: auto !important;
+        background-color: #ffffff !important;
+        border-radius: 0 0 24px 24px !important;
+        padding: 1.75rem 1.15rem 2rem !important;
+        margin-bottom: 1.25rem !important;
+        box-shadow: 0 4px 16px rgba(15, 23, 42, 0.05) !important;
+        border-bottom: 2px solid #cbd5e1 !important;
+      }
+
+      .icebreaker-section-subhead {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 0.35rem !important;
+      }
+
+      /* 主单列容器：留出左右间距，并在各白岛之间形成深灰底色槽 */
+      .main-container {
+        padding: 0 1rem 2.5rem !important;
+        gap: 0 !important;
+      }
+
+      /* 3. 把 01、02、03 变成三个完全独立、边界极其分明的纯白大卡片岛屿 */
+      #section-stages,
+      #section-rules,
+      #section-check {
+        background-color: #ffffff !important;
+        border-radius: 20px !important;
+        margin: 0 0 1.25rem 0 !important; /* 每个大模块之间留出 20px 深灰明显的分界沟槽！ */
+        padding: 1.75rem 1.15rem !important;
+        border: 1px solid #cbd5e1 !important;
+        box-shadow: 0 6px 20px rgba(15, 23, 42, 0.04) !important;
+      }
+
+      /* 给三大模块的头部加上醒目的底部分割线，一眼看清章节开头 */
+      .unboxed-section-header,
+      .roadmap-section-header {
+        padding-bottom: 1rem !important;
+        margin-bottom: 1.25rem !important;
+        border-bottom: 2px solid #f1f5f9 !important;
+      }
+
+      .unboxed-title {
+        font-size: 1.25rem !important;
+        line-height: 1.35 !important;
+      }
+
+      .unboxed-title-row {
+        align-items: center !important;
+        gap: 0.5rem !important;
+      }
+
+      [class*="badge"], [class*="pill"], .chapter-tag, .beyond-tag-badge, .redline-law-badge, .gallery-badge-pill {
+        white-space: nowrap !important;
+        flex-shrink: 0 !important;
+      }
+
+      /* 4. 大白岛内部的子卡片改为干净的微灰底色，形成“白岛托灰卡”的清晰层次 */
+      .tool-card,
+      .dir-card-clean,
+      .arena-box-clean,
+      .beyond-unit,
+      .stage-card {
+        background-color: #f8fafc !important;
+        border: 1px solid #e2e8f0 !important;
+        border-radius: 14px !important;
+        padding: 1.25rem !important;
+        box-shadow: none !important;
+      }
+
+      .ai-trigger-left {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 0.35rem !important;
+      }
+
+      /* 阶段导语：做成淡蓝底色块，不再单薄一条线 */
+      .stage-panel-intro {
+        background-color: #eff6ff !important;
+        border-left: 4px solid #2563eb !important;
+        border-radius: 0 10px 10px 0 !important;
+        padding: 0.875rem 1rem !important;
+        margin-bottom: 1.25rem !important;
+      }
+
+      .stage-panel-intro h3 {
+        font-size: 1.1rem !important;
+        line-height: 1.35 !important;
+        margin-bottom: 0.35rem !important;
+      }
+
+      .stage-panel-intro p {
+        font-size: 0.84rem !important;
+        line-height: 1.55 !important;
+      }
+
+      /* 5. 修复 02 极客公约放大镜图标掉下来独占一行的 Bug：左卡图标和文字保持水平紧凑同行 */
+      .covenant-card-spirit {
+        background-color: #f8fafc !important;
+        border: 1px solid #e2e8f0 !important;
+        border-radius: 14px !important;
+        padding: 1.25rem !important;
+      }
+
+      .covenant-card-spirit .covenant-card-head {
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        gap: 0.5rem !important;
+        margin-bottom: 0.75rem !important;
+      }
+
+      .covenant-card-spirit .covenant-card-title,
+      #section-rules h3 {
+        display: inline !important;
+        font-size: 1.05rem !important;
+        margin: 0 !important;
+      }
+
+      /* 极客公约右卡保持红底警示 */
+      .covenant-card-alert {
+        background-color: #fff5f5 !important;
+        border: 1px solid #fecaca !important;
+        border-left: 4px solid #dc2626 !important;
+        border-radius: 14px !important;
+        padding: 1.25rem !important;
+      }
+
+      .covenant-card-alert .covenant-card-head {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 0.45rem !important;
+        margin-bottom: 0.75rem !important;
+      }
+
+      .covenant-card-alert .covenant-card-title {
+        font-size: 1.05rem !important;
+        margin: 0 !important;
+      }
+
+      #section-rules > div:last-child > div:first-child {
+        background-color: #f8fafc !important;
+        border: 1px solid #e2e8f0 !important;
+      }
+
+      /* 6. 打卡清单内部外框脱掉多余套娃，直接融入 03 白岛 */
+      .checklist-container-clean,
+      #section-check > div:last-child {
+        border: none !important;
+        padding: 0 !important;
+        background: transparent !important;
+        box-shadow: none !important;
+      }
+
+      /* 7. 底部进入下一阶段按钮全宽 */
+      .stage-nav-footer,
+      .stage-footer-nav {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 0.75rem !important;
+        margin-top: 1.5rem !important;
+        padding-top: 1.25rem !important;
+        border-top: 1px dashed #e2e8f0 !important;
+      }
+
+      .stage-nav-btn,
+      .stage-footer-nav button,
+      .stage-footer-nav a {
+        width: 100% !important;
+        justify-content: center !important;
+        padding: 0.65rem 0.5rem !important;
+        font-size: 0.8rem !important;
+        letter-spacing: -0.015em !important;
+      }
+
+      .stage-step-hint {
+        text-align: center !important;
+      }
+    }
+
+
+    /* ==========================================================================
+       TRANSPARENT CARD WATERMARK BACKDROP SYSTEM (12 CORE SUBJECTS)
+       TOP-ANCHORED & TOP-DOWN MASK (PREVENTS JUMPING ON ACCORDION EXPAND)
+       ========================================================================== */
+    .card-watermark-bg {
+      position: absolute;
+      top: 0;
+      right: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+      opacity: 0.28;
+      transition: opacity 0.35s ease;
+    }
+
+    .card-watermark-bg img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      object-position: right top;
+      filter: saturate(1.25);
+      /* Direct top-to-bottom mask so graphic cascades down and smoothly vanishes */
+      -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.75) 60%, rgba(0, 0, 0, 0) 100%);
+      mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.75) 60%, rgba(0, 0, 0, 0) 100%);
+    }
+
+    /* 1. Stage 1 Cards (Python, C, Linux) - Anchored strictly at top:0 with fixed height */
+    .tool-card .card-watermark-bg {
+      top: 0;
+      right: 0;
+      bottom: auto;
+      width: 280px;
+      height: 220px;
+      max-width: 85%;
+      opacity: 0.28;
+    }
+    .tool-card:hover .card-watermark-bg {
+      opacity: 0.42;
+    }
+
+    /* 2. Stage 2 Cards (Web, Misc, Crypto, Reverse, Pwn) - Anchored strictly at top:0 with fixed height */
+    .dir-card-clean .card-watermark-bg {
+      top: 0;
+      right: 0;
+      bottom: auto;
+      transform: none;
+      width: 520px;
+      height: 320px;
+      max-width: 54%;
+      opacity: 0.30;
+    }
+    .dir-card-clean:hover .card-watermark-bg {
+      opacity: 0.45;
+    }
+
+    /* 3. Stage 4 Units (Beyond 4 domains) - Anchored strictly at top:0 with fixed height */
+    .beyond-unit .card-watermark-bg {
+      top: 0;
+      right: 0;
+      bottom: auto;
+      width: 100%;
+      height: 220px;
+      opacity: 0.28;
+    }
+    .beyond-unit:hover .card-watermark-bg {
+      opacity: 0.40;
+    }
+
+    /* Strict container setup: relative positioning with no overflow leak */
+    .tool-card,
+    .dir-card-clean,
+    .beyond-unit {
+      position: relative !important;
+      overflow: hidden !important;
+    }
+
+    /* Ensure zero opaque layers obstruct the watermark */
+    .tool-card > *:not(.card-watermark-bg),
+    .tool-card-content,
+    .dir-card-inner,
+    .dir-card-inner > *,
+    .beyond-unit > *:not(.card-watermark-bg) {
+      position: relative;
+      z-index: 1;
+      background-color: transparent !important;
+    }
+
+    /* Translucent frosted glass for child tags and accordions so watermark shines through */
+    .tool-card .res-accordion-summary,
+    .dir-card-clean .res-accordion-summary,
+    .beyond-unit .res-accordion-summary {
+      background: rgba(255, 255, 255, 0.45) !important;
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      border: 1px solid rgba(226, 232, 240, 0.85) !important;
+    }
+    .tool-card .res-accordion-summary:hover,
+    .dir-card-clean .res-accordion-summary:hover,
+    .beyond-unit .res-accordion-summary:hover {
+      background: rgba(239, 246, 255, 0.65) !important;
+      border-color: rgba(191, 219, 254, 0.95) !important;
+    }
+
+    .tool-card .res-accordion,
+    .dir-card-clean .res-accordion,
+    .beyond-unit .res-accordion,
+    .res-accordion-body,
+    .res-list,
+    .dir-links-footer {
+      background: transparent !important;
+    }
+
+    .tag-unit {
+      background: rgba(255, 255, 255, 0.45) !important;
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      border: 1px solid rgba(203, 213, 225, 0.85) !important;
+    }
+
+    .dir-level {
+      background: rgba(255, 255, 255, 0.45) !important;
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      border: 1px solid rgba(226, 232, 240, 0.85) !important;
+    }
+
+    .dir-code-tag {
+      background: color-mix(in srgb, var(--dir-accent, #2563eb) 12%, rgba(255, 255, 255, 0.5)) !important;
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      border: 1.5px solid color-mix(in srgb, var(--dir-accent, #2563eb) 35%, rgba(255, 255, 255, 0.6)) !important;
+    }
+
+    .beyond-chip {
+      background: rgba(255, 255, 255, 0.45) !important;
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      border: 1px solid rgba(203, 213, 225, 0.85) !important;
+    }
+
+    .beyond-tag-badge {
+      background: rgba(37, 99, 235, 0.08) !important;
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      border: 1px solid rgba(191, 219, 254, 0.85) !important;
+    }
+
+    /* Mobile view: top-anchored, zero jitter on accordion open */
+    @media (max-width: 768px) {
+      .dir-card-clean .card-watermark-bg,
+      .tool-card .card-watermark-bg,
+      .beyond-unit .card-watermark-bg {
+        top: 0 !important;
+        right: 0 !important;
+        bottom: auto !important;
+        transform: none !important;
+        width: 200px !important;
+        height: 160px !important;
+        max-width: 60% !important;
+        opacity: 0.22 !important;
+      }
+      .tool-card:hover .card-watermark-bg,
+      .dir-card-clean:hover .card-watermark-bg,
+      .beyond-unit:hover .card-watermark-bg {
+        transform: none !important;
+      }
+    }
+
+</style>
+</head>
+<body>
+
+  <!-- Reading Progress Tracker -->
+  <div id="reading-progress"></div>
+
+  <!-- Global Sticky Header -->
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="brand-area">
+        <div style="width:28px; height:28px; border-radius:6px; background:#2563eb; color:#fff; display:flex; align-items:center; justify-content:center; box-shadow:0 2px 5px rgba(37,99,235,0.22); flex-shrink:0;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+        </div>
+        <div class="brand-title">极客创新实验室 · 网络安全部</div>
+      </div>
+
+      <!-- Desktop Center Nav Anchors (Direct Smooth Scroll) -->
+      <nav class="header-nav-anchors">
+        <a href="#section-intro" class="header-anchor-link active">00 破冰起步</a>
+        <a href="#section-stages" class="header-anchor-link">01 进阶路线</a>
+        <a href="#section-rules" class="header-anchor-link">02 极客公约</a>
+        <a href="#section-check" class="header-anchor-link">03 通关打卡</a>
+      </nav>
+
+      <div class="header-actions">
+        <button class="search-btn" id="open-search-btn" title="快捷检索 (Ctrl + K)">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+          <span class="search-text-label">检索</span>
+          <span class="search-kbd">Ctrl K</span>
+        </button>
+
+        <a href="mindmap.html" class="btn-asset-link" style="border-color:#bfdbfe; background:#eff6ff; color:#2563eb; font-weight:700;" title="跳转至网络安全自学技术全景思维导图">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+          <span>网安思维导图 ↗</span>
+        </a>
+        <a href="https://ctf.example.com" target="_blank" rel="noopener noreferrer" class="btn-arena-link">
+          <span>实战攻防靶场 (ctf.example.com) ↗</span>
+        </a>
+
+        <!-- Mobile Drawer Toggle -->
+        <button class="mobile-menu-btn" id="mobile-drawer-toggle" aria-label="打开目录菜单">
+          ☰
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- FIRST SCREEN: HERO + 00 ICEBREAKER DASHBOARD (100vh Breathing View) -->
+  <section id="section-intro" class="first-screen-container">
+    <div class="first-screen-inner">
+      
+      <!-- Hero Header Block -->
+      <div class="hero-clean-block">
+        <div class="hero-badge-strip">
+          <span class="hero-shield-pill">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            高校极客空间 · 网络安全创新实验室
+          </span>
+          <span class="hero-status-pill">
+            <span class="pulse-dot"></span>
+            2026 新生自学指引
+          </span>
+        </div>
+
+        <h1 class="hero-clean-title">
+          极客创新实验室 · <span class="hero-title-sub">网络安全部</span>
+        </h1>
+        
+        <div class="hero-subtitle-tagline">
+          网络安全自学全景指南 &amp; CTF 实战破局路线
+        </div>
+
+        <p class="hero-clean-lead">
+          欢迎来到网络安全自学指引站。网络安全涵盖 Web 安全、二进制底层、现代密码学与数字取证等丰富技术领域，而 CTF（夺旗赛）则是全球安全从业者通用的合法解题实战平台。本站专为大一零基础同学梳理自学脉络，帮你理清网安学什么、怎么学、从哪上手，带你通过动手解题和环境搭建，一步步跨入真实网络攻防的世界。
+        </p>
+
+        <!-- 2 Clean Action Buttons (No Duplicated Arena Button) -->
+        <div class="hero-actions-group">
+          <a href="#section-stages" class="btn-primary-hero" title="查阅从零起步到实战的四个阶段">
+            <span>开始四阶进阶学习 ↓</span>
+          </a>
+          <a href="mindmap.html" class="btn-secondary-hero" title="打开交互式网安技能树（思维导图）">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+            <span>探索网安自学技能树 ↗</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- 00 新生破冰三张卡片 (去色差粗线，纯白克制边框) -->
+      <div class="icebreaker-cards-wrap">
+        <div class="icebreaker-section-subhead">
+          <span class="icebreaker-kicker">00 / 新生三步破冰起步</span>
+          <span class="icebreaker-subtext">开箱即用的认知锚点 · 精选导学视频 · 原稿讲义下载</span>
+        </div>
+
+        <div class="bento-dashboard-grid">
+          <!-- Bento Card 1: 破冰认知 -->
+          <div class="bento-card bento-card-concept">
+            <div class="bento-card-top">
+              <span class="bento-badge badge-blue">破冰核心认知</span>
+              <span class="bento-meta">思维重塑</span>
+            </div>
+            <h3 class="bento-title">以赛促学 · 底层为根</h3>
+            <p class="bento-text">
+              网安并非“三秒敲破防火墙”。CTF 夺旗赛是在合法合规受控环境中，通过分析漏洞逆推网络与系统底层原理的最佳练兵场，最终引领走向工业级实战。
+            </p>
+            
+          </div>
+
+          <!-- Bento Card 2: 萌新先导视频 -->
+          <div class="bento-card bento-card-videos">
+            <div class="bento-card-top">
+              <span class="bento-badge badge-blue">先导视频精讲</span>
+              <span class="bento-meta">2 堂必修课</span>
+            </div>
+            <h3 class="bento-title">新手入门必看精选</h3>
+            
+            <div class="bento-video-list">
+              <a href="https://www.bilibili.com/video/BV1bGMnz5EJs" target="_blank" rel="noopener noreferrer" class="bento-video-item">
+                <div class="video-item-left">
+                  <div class="play-icon-box">▶</div>
+                  <div class="video-info">
+                    <span class="video-name">全景科普：从 0 到 1 带你了解网安</span>
+                    <span class="video-sub">行业扫盲 · BV1bGMnz5EJs</span>
+                  </div>
+                </div>
+                <span class="video-tag">B站 ↗</span>
+              </a>
+
+              <a href="https://www.bilibili.com/video/BV1KqqPYREby/" target="_blank" rel="noopener noreferrer" class="bento-video-item">
+                <div class="video-item-left">
+                  <div class="play-icon-box">▶</div>
+                  <div class="video-info">
+                    <span class="video-name">CTF 夺旗赛入门秘籍（大学生必看）</span>
+                    <span class="video-sub">赛制拆解 · BV1KqqPYREby</span>
+                  </div>
+                </div>
+                <span class="video-tag">B站 ↗</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- Bento Card 3: 原稿资料库 -->
+          <div class="bento-card bento-card-downloads">
+            <div class="bento-card-top">
+              <span class="bento-badge badge-blue">知识库讲义下载</span>
+              <span class="bento-meta">支持离线打印</span>
+            </div>
+            <h3 class="bento-title">知识库源文件下载</h3>
+            <p class="bento-text" style="margin-bottom:0.75rem;">
+              完整路线原件，支持离线精读、打印装订或导入 Obsidian / Notion。
+            </p>
+
+            <div class="bento-downloads-list">
+              <!-- Docx Item -->
+              <div class="bento-dl-item">
+                <div class="dl-item-info">
+                  <span class="dl-format-tag tag-word">DOCX</span>
+                  <div class="dl-texts">
+                    <span class="dl-filename">网络安全-学习路线.docx</span>
+                    <span class="dl-filesize">4.9 MB · 图文完整版</span>
+                  </div>
+                </div>
+                <a href="docs/security-roadmap.docx" download="网络安全-学习路线.docx" class="btn-dl-chip btn-dl-primary" title="下载 Word 讲义">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                  下载讲义
+                </a>
+              </div>
+
+              <!-- Markdown Item -->
+              <div class="bento-dl-item">
+                <div class="dl-item-info">
+                  <span class="dl-format-tag tag-md">MD</span>
+                  <div class="dl-texts">
+                    <span class="dl-filename">网络安全-学习路线.md</span>
+                    <span class="dl-filesize">19 KB · 纯文本原稿</span>
+                  </div>
+                </div>
+                <a href="docs/security-roadmap.md" download="网络安全-学习路线.md" class="btn-dl-chip btn-dl-secondary" title="下载 Markdown 原稿">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                  下载原稿
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Main Single-Column Centered Container (No Sidebar) -->
+  <main class="main-container">
+<!-- CHAPTER 01: 四阶实战进阶成长体系 (彻底脱壳极简体系) -->
+      <section id="section-stages" class="unboxed-section">
+        <div class="unboxed-section-header">
+          <div class="unboxed-title-row">
+            <span class="chapter-tag">01</span>
+            <h2 class="unboxed-title">四阶实战进阶成长体系</h2>
+          </div>
+          <span class="unboxed-desc">点击下方步骤条按需切换阶段 · 循序渐进构建网安实战能力</span>
+        </div>
+        <div class="unboxed-section-body">
+          
+          <!-- Compact Stepper Tab Bar -->
+          <div class="stage-stepper-bar" id="stage-stepper-bar">
+            <button class="stage-step-btn active" data-stage="1" onclick="switchStage(1)">
+              <span class="step-num">01</span>
+              <div class="step-info">
+                <span class="step-name">代码与环境</span>
+                <span class="step-badge">基础筑基 · 1~2周</span>
+              </div>
+            </button>
+            <button class="stage-step-btn" data-stage="2" onclick="switchStage(2)">
+              <span class="step-num">02</span>
+              <div class="step-info">
+                <span class="step-name">CTF五大方向</span>
+                <span class="step-badge">靶向破茧 · 实战破局</span>
+              </div>
+            </button>
+            <button class="stage-step-btn" data-stage="3" onclick="switchStage(3)">
+              <span class="step-num">03</span>
+              <div class="step-info">
+                <span class="step-name">靶场与复盘</span>
+                <span class="step-badge">铸剑砺刃 · 题解沉淀</span>
+              </div>
+            </button>
+            <button class="stage-step-btn" data-stage="4" onclick="switchStage(4)">
+              <span class="step-num">04</span>
+              <div class="step-info">
+                <span class="step-name">工业实战演练</span>
+                <span class="step-badge">实战远航 · 走向真实</span>
+              </div>
+            </button>
+          </div>
+
+          <!-- Stage Panels Container -->
+          <div class="stage-panels-wrap">
+            
+            <!-- PANEL 1 -->
+            <div class="stage-panel" id="stage-panel-1" style="display:block;">
+              <div class="stage-panel-intro">
+                <div class="stage-panel-meta">STAGE-01 基础筑基期 · 建议耗时 1~2 周</div>
+                <h3>第一阶段：最小化起步准备（代码与环境）</h3>
+                <p>配齐 Python、Kali 虚拟机与浏览器 F12 工具即可快速开干，无需盲目死磕高深理论。</p>
+              </div>
+              <div class="cards-grid-3">
+            <!-- Python Card -->
+            <div class="tool-card">
+              <div class="card-watermark-bg"><img src="assets/trans_bg-python.png" alt="Python Scripting Backdrop" /></div>
+            <div class="tool-card-content">
+                <div>
+                  <div class="tool-header">
+                    <div class="tool-title">Python 编程基础</div>
+                    <div class="tool-subtitle">解密脚本与自动化 Exploit 必备</div>
+                  </div>
+                  <div class="tool-target-box">
+                    <strong>学习目标：</strong>掌握字符串、列表、字典、函数和文件读写，能读懂并修改简单脚本即可，无需死记高级语法。
+                  </div>
+                </div>
+                <details class="res-accordion">
+                  <summary class="res-accordion-summary">
+                    <span>展开推荐学习资源与教程</span>
+                    <span class="acc-chevron">▾</span>
+                  </summary>
+                  <div class="res-accordion-body">
+                    <ul class="res-list">
+                  <li><a href="https://www.bilibili.com/video/BV1Jgf6YvE8e" target="_blank" rel="noopener noreferrer">林粒粒：3小时快速入门Python动画课 ↗</a></li>
+                  <li><a href="https://www.bilibili.com/video/BV1ex411x7Em" target="_blank" rel="noopener noreferrer">黑马程序员：Python全套教程(8天) ↗</a></li>
+                  <li><a href="https://www.bilibili.com/video/BV1BP4y1E7WY" target="_blank" rel="noopener noreferrer">8天玩转Python基础（145集） ↗</a></li>
+                  <li><a href="https://www.runoob.com/python3/python3-tutorial.html" target="_blank" rel="noopener noreferrer">菜鸟教程：Python 3 图文手册 ↗</a></li>
+                  <li><a href="https://docs.python.org/zh-cn/3/tutorial/index.html" target="_blank" rel="noopener noreferrer">Python 官方中文教程 ↗</a></li>
+                </ul>
+                  </div>
+                </details>
+              </div>
+            </div>
+
+            <!-- C Language Card -->
+            <div class="tool-card">
+              <div class="card-watermark-bg"><img src="assets/trans_bg-c.png" alt="C Language Backdrop" /></div>
+            <div class="tool-card-content">
+                <div>
+                  <div class="tool-header">
+                    <div class="tool-title">C 语言基础（按需选学）</div>
+                    <div class="tool-subtitle">Reverse 逆向与 Pwn 二进制必备</div>
+                  </div>
+                  <div class="tool-target-box">
+                    <strong>学习目标：</strong>主攻 Web 或 Misc 前期可先跳过；主攻底层方向需理解指针、结构体、内存布局与函数调用栈。
+                  </div>
+                </div>
+                <details class="res-accordion">
+                  <summary class="res-accordion-summary">
+                    <span>展开推荐学习资源与教程</span>
+                    <span class="acc-chevron">▾</span>
+                  </summary>
+                  <div class="res-accordion-body">
+                    <ul class="res-list">
+                  <li><a href="https://www.bilibili.com/video/BV1th411z7sn/" target="_blank" rel="noopener noreferrer">浙江大学翁恺：C语言程序设计 ↗</a></li>
+                  <li><a href="https://www.bilibili.com/video/BV1Hf4y1w7BH/" target="_blank" rel="noopener noreferrer">黑马程序员：C语言零基础入门教程 ↗</a></li>
+                  <li><a href="https://www.runoob.com/cprogramming/c-tutorial.html" target="_blank" rel="noopener noreferrer">菜鸟教程：C 语言基础教程 ↗</a></li>
+                  <li><a href="https://www.runoob.com/cprogramming/c-examples.html" target="_blank" rel="noopener noreferrer">C 语言 100 个经典代码实例 ↗</a></li>
+                </ul>
+                  </div>
+                </details>
+              </div>
+            </div>
+
+            <!-- Linux Card -->
+            <div class="tool-card">
+              <div class="card-watermark-bg"><img src="assets/trans_bg-linux.png" alt="Linux Shell Backdrop" /></div>
+            <div class="tool-card-content">
+                <div>
+                  <div class="tool-header">
+                    <div class="tool-title">Linux 与命令行基础</div>
+                    <div class="tool-subtitle">安全工具运行与靶场交互基石</div>
+                  </div>
+                  <div class="tool-target-box">
+                    <strong>环境搭建：</strong>推荐 Kali Linux（WSL2 或虚拟机），掌握常用命令（浏览文件、查找文本、权限管理、SSH 远程连接）。
+                  </div>
+                </div>
+                <details class="res-accordion">
+                  <summary class="res-accordion-summary">
+                    <span>展开推荐学习资源与教程</span>
+                    <span class="acc-chevron">▾</span>
+                  </summary>
+                  <div class="res-accordion-body">
+                    <ul class="res-list">
+                  <li><a href="https://overthewire.org/wargames/bandit/" target="_blank" rel="noopener noreferrer">OverTheWire: Bandit（游戏闯关学命令） ↗</a></li>
+                  <li><span style="font-size:0.78rem; color:var(--text-muted);">推荐方式：Win11 WSL2 或 VMware 虚拟机</span></li>
+                  <li><span style="font-size:0.78rem; color:var(--text-muted);">核心思路：做题时随用随查，边练边记</span></li>
+                </ul>
+                  </div>
+                </details>
+              </div>
+            </div>
+          </div>
+
+          <!-- AI Assistant Box (Flat Collapsible Accordion) -->
+          <div class="ai-accordion-container">
+            <details class="res-accordion ai-main-accordion">
+              <summary class="res-accordion-summary ai-accordion-trigger">
+                <div class="ai-trigger-left" style="display:flex; align-items:center; gap:8px;">
+                  <span class="gallery-badge-pill">AI × CO-PILOT</span>
+                  <strong style="font-size:0.86rem; color:var(--text-title);">AI 辅助学习与智能体协同（点击展开工具推荐）</strong>
+                </div>
+                <span class="acc-chevron">▾</span>
+              </summary>
+              <div class="res-accordion-body">
+                <p class="ai-box-desc" style="margin: 0.5rem 0 1rem; font-size:0.83rem; line-height:1.6; color:var(--text-sub);">
+                  在现代网安学习中，学会向 AI 提问能帮你跨越环境配置与报错壁垒。<strong>切记用它来“辅助理解底层原理”，而不是直接当“伸手党”要答案。</strong>
+                </p>
+
+                <!-- Flat AI tools list without nested card borders -->
+                <div class="ai-flat-matrix">
+                  <div class="ai-flat-group">
+                    <div class="ai-flat-title">国内主流 LLM (直连免折腾)</div>
+                    <div class="ai-chip-list">
+                      <span class="simple-chip">DeepSeek 深度求索</span>
+                      <span class="simple-chip">Kimi</span>
+                      <span class="simple-chip">智谱清言 GLM</span>
+                      <span class="simple-chip">豆包</span>
+                    </div>
+                    <div class="ai-flat-note">DeepSeek 代码推理与逻辑分析极强；Kimi 长文本处理优秀，适合直接通读大篇源码。</div>
+                  </div>
+
+                  <div class="ai-flat-group">
+                    <div class="ai-flat-title">海外前沿 LLM (综合与编码天花板)</div>
+                    <div class="ai-chip-list">
+                      <span class="simple-chip">Claude 3.5 / 3.7</span>
+                      <span class="simple-chip">ChatGPT</span>
+                      <span class="simple-chip">Gemini</span>
+                    </div>
+                    <div class="ai-flat-note">Claude 逆向逻辑还原与代码重构极佳；Gemini 超大上下文适合跨文件分析大型代码库。</div>
+                  </div>
+
+                  <div class="ai-flat-group">
+                    <div class="ai-flat-title">AI 原生 IDE (新手首选神器)</div>
+                    <div class="ai-chip-list">
+                      <span class="simple-chip">Cursor</span>
+                      <span class="simple-chip">Trae (字节免费直连)</span>
+                      <span class="simple-chip">Windsurf</span>
+                    </div>
+                    <div class="ai-flat-note">感知项目上下文，在写 Python 解密脚本或 Exp 时结合代码自动纠错并就地修复运行报错。</div>
+                  </div>
+
+                  <div class="ai-flat-group">
+                    <div class="ai-flat-title">终端自主 Agent (进阶利器)</div>
+                    <div class="ai-chip-list">
+                      <span class="simple-chip">Claude Code</span>
+                      <span class="simple-chip">Cline (VSCode插件)</span>
+                      <a href="https://github.com/YuJunZhiXue/dsh-purge" target="_blank" rel="noopener noreferrer" class="simple-chip" style="color:var(--primary);">dsh-purge ↗</a>
+                    </div>
+                    <div class="ai-flat-note">直接接管终端环境，通过 MCP 协议联动 IDA、Burp Suite 进行半自动化逆向分析与漏洞审计。</div>
+                  </div>
+                </div>
+              </div>
+            </details>
+          </div>
+            <div class="stage-nav-footer">
+              <span class="stage-step-hint">当前进度：阶段一 · 环境与代码</span>
+              <button class="stage-nav-btn primary" onclick="switchStage(2, true)">
+                <span>进入下一阶段：STAGE 02 · CTF五大方向</span>
+                <span>→</span>
+              </button>
+            </div>
+            </div>
+
+            <!-- PANEL 2 -->
+            <div class="stage-panel" id="stage-panel-2" style="display:none;">
+              <div class="stage-panel-intro">
+                <div class="stage-panel-meta">STAGE-02 靶向破茧期 · 赛题逆推原理</div>
+                <h3>第二阶段：以 CTF 为练兵场（五大方向与教程汇总）</h3>
+                <p>选方向建议：初学先从 Web 或 Misc 入手；对底层逻辑/C语言感兴趣主攻 Reverse 或 Pwn；数学功底好攻 Crypto。先体验全貌，再专精 1~2 个方向。</p>
+              </div>
+              <div style="margin-bottom:1rem; font-size:0.85rem; color:var(--text-body); line-height:1.6;">
+            <strong>必存权威百科：</strong>
+            <a href="https://hello-ctf.com/" target="_blank" rel="noopener noreferrer">Hello CTF — 零基础入门必读手册 ↗</a> · 
+            <a href="https://ctf-wiki.org/" target="_blank" rel="noopener noreferrer">CTF Wiki — 网络安全竞赛权威知识库 ↗</a>
+          </div>
+
+          <!-- Clean Tabs -->
+          <div class="tab-bar-clean">
+            <button class="tab-clean-btn active" data-filter="web">Web 网页攻防</button>
+            <button class="tab-clean-btn" data-filter="misc">Misc 安全杂项</button>
+            <button class="tab-clean-btn" data-filter="crypto">Crypto 密码学</button>
+            <button class="tab-clean-btn" data-filter="reverse">Reverse 逆向工程</button>
+            <button class="tab-clean-btn" data-filter="pwn">Pwn 二进制漏洞</button>
+          </div>
+
+          
+
+          <div class="dirs-grid-tabbed" id="dirs-grid-container">
+            <!-- 1. Web Card -->
+            <div class="dir-card-clean" data-dir="web" style="--dir-accent: #0284c7;">
+              <div class="card-watermark-bg"><img src="assets/trans_bg-web.png" alt="WEB Backdrop" /></div>
+              
+              <div class="dir-card-inner">
+                <div>
+                  <div class="dir-top-meta">
+                    <span class="dir-code-tag">WEB SECURITY</span>
+                    <span class="dir-level">入门推荐 · 难度: ★★</span>
+                  </div>
+                  <h4>1. Web（网页攻防）</h4>
+                  <p class="dir-text">
+                    接触网页应用交互、请求参数、身份验证与常见 Web 漏洞。做题时打开浏览器开发者工具（F12）看一次请求与响应，再逐步使用抓包神器 Burp Suite，自然掌握 HTTP 协议与常见漏洞利用。
+                  </p>
+                  <div class="tools-wrap">
+                    <span class="tools-caption">核心工具链</span>
+                    <div class="tag-cluster">
+                      <span class="tag-unit">Burp Suite</span>
+                      <span class="tag-unit">浏览器 F12</span>
+                      <span class="tag-unit">AntSword 蚁剑</span>
+                      <span class="tag-unit">SQLmap</span>
+                      <span class="tag-unit">Postman</span>
+                    </div>
+                  </div>
+                </div>
+                <details class="res-accordion">
+                  <summary class="res-accordion-summary">
+                    <span>展开精选学习资源与官方手册</span>
+                    <span class="acc-chevron">▾</span>
+                  </summary>
+                  <div class="res-accordion-body">
+                    <ul class="dir-links-footer">
+                  <li><a href="https://portswigger.net/web-security" target="_blank" rel="noopener noreferrer">PortSwigger Web Security Academy (顶级免费实验平台) ↗</a></li>
+                  <li><a href="https://ctf-wiki.org/" target="_blank" rel="noopener noreferrer">CTF Wiki - Web 篇 ↗</a></li>
+                  <li><a href="https://www.bilibili.com/video/BV1ZCk9YhEt1/" target="_blank" rel="noopener noreferrer">B站：CTF夺旗入门实战+Web安全 ↗</a></li>
+                  <li><a href="https://www.bilibili.com/video/BV1ZK411N7WG/" target="_blank" rel="noopener noreferrer">B站：超新CTF培训Web攻防基础教程 ↗</a></li>
+                </ul>
+                  </div>
+                </details>
+              </div>
+            </div>
+
+            <!-- 2. Misc Card -->
+            <div class="dir-card-clean" data-dir="misc" style="--dir-accent: #db2777; display:none;">
+              <div class="card-watermark-bg"><img src="assets/trans_bg-misc.png" alt="MISC Backdrop" /></div>
+              
+              <div class="dir-card-inner">
+                <div>
+                  <div class="dir-top-meta">
+                    <span class="dir-code-tag">MISC FORENSICS</span>
+                    <span class="dir-level">趣味探索 · 难度: ★★</span>
+                  </div>
+                  <h4>2. Misc（安全杂项与数字取证）</h4>
+                  <p class="dir-text">
+                    涵盖文件分析、各类编码转换、隐写术（图片/音频隐写）、网络流量包深度分析与数字取证。非常适合零基础培养查线索与安全工具手感；分析流量包过程中自然掌握 TCP/IP 协议与 Wireshark。
+                  </p>
+                  <div class="tools-wrap">
+                    <span class="tools-caption">核心工具链</span>
+                    <div class="tag-cluster">
+                      <span class="tag-unit">Wireshark</span>
+                      <span class="tag-unit">010 Editor</span>
+                      <span class="tag-unit">Binwalk</span>
+                      <span class="tag-unit">CyberChef</span>
+                      <span class="tag-unit">Volatility</span>
+                    </div>
+                  </div>
+                </div>
+                <details class="res-accordion">
+                  <summary class="res-accordion-summary">
+                    <span>展开精选学习资源与官方手册</span>
+                    <span class="acc-chevron">▾</span>
+                  </summary>
+                  <div class="res-accordion-body">
+                    <ul class="dir-links-footer">
+                  <li><a href="https://hello-ctf.com/contents/" target="_blank" rel="noopener noreferrer">Hello CTF 核心章节 (零基础必读手册) ↗</a></li>
+                  <li><a href="https://ctf-wiki.org/" target="_blank" rel="noopener noreferrer">CTF Wiki - Misc 篇 ↗</a></li>
+                  <li><a href="https://hello-ctf.com/" target="_blank" rel="noopener noreferrer">Hello CTF 官方手册主页 ↗</a></li>
+                </ul>
+                  </div>
+                </details>
+              </div>
+            </div>
+
+            <!-- 3. Crypto Card -->
+            <div class="dir-card-clean" data-dir="crypto" style="--dir-accent: #ea580c; display:none;">
+              <div class="card-watermark-bg"><img src="assets/trans_bg-crypto.png" alt="CRYPTO Backdrop" /></div>
+              
+              <div class="dir-card-inner">
+                <div>
+                  <div class="dir-top-meta">
+                    <span class="dir-code-tag">CRYPTOGRAPHY</span>
+                    <span class="dir-level">数学机理 · 难度: ★★★</span>
+                  </div>
+                  <h4>3. Crypto（密码学）</h4>
+                  <p class="dir-text">
+                    围绕编码变换、异或运算、古典密码、数论基础（欧几里得、模运算、大数分解）以及现代密码算法（RSA、AES、ECC）的安全缺陷展开，经常使用 Python 编写自动化解密脚本。
+                  </p>
+                  <div class="tools-wrap">
+                    <span class="tools-caption">核心工具链</span>
+                    <div class="tag-cluster">
+                      <span class="tag-unit">Python (gmpy2)</span>
+                      <span class="tag-unit">SageMath</span>
+                      <span class="tag-unit">CyberChef</span>
+                      <span class="tag-unit">RsaCtfTool</span>
+                      <span class="tag-unit">PyCryptodome</span>
+                    </div>
+                  </div>
+                </div>
+                <details class="res-accordion">
+                  <summary class="res-accordion-summary">
+                    <span>展开精选学习资源与官方手册</span>
+                    <span class="acc-chevron">▾</span>
+                  </summary>
+                  <div class="res-accordion-body">
+                    <ul class="dir-links-footer">
+                  <li><a href="https://www.cryptohack.org/challenges/introduction/" target="_blank" rel="noopener noreferrer">CryptoHack 入门挑战（边写代码边学现代密码学） ↗</a></li>
+                  <li><a href="https://ctf-wiki.org/" target="_blank" rel="noopener noreferrer">CTF Wiki - Crypto 篇 ↗</a></li>
+                </ul>
+                  </div>
+                </details>
+              </div>
+            </div>
+
+            <!-- 4. Reverse Card -->
+            <div class="dir-card-clean" data-dir="reverse" style="--dir-accent: #7c3aed; display:none;">
+              <div class="card-watermark-bg"><img src="assets/trans_bg-reverse.png" alt="REVERSE Backdrop" /></div>
+              
+              <div class="dir-card-inner">
+                <div>
+                  <div class="dir-top-meta">
+                    <span class="dir-code-tag">REVERSE</span>
+                    <span class="dir-level">逆向剖析 · 难度: ★★★★</span>
+                  </div>
+                  <h4>4. Reverse（逆向工程）</h4>
+                  <p class="dir-text">
+                    把编译好的二进制程序“拆开”，通过反汇编与反编译还原核心逻辑。理解汇编指令与内存，配合 IDA Pro、Ghidra 进行反编译静态分析，配合 x64dbg、GDB 等工具进行动态调试。
+                  </p>
+                  <div class="tools-wrap">
+                    <span class="tools-caption">核心工具链</span>
+                    <div class="tag-cluster">
+                      <span class="tag-unit">IDA Pro</span>
+                      <span class="tag-unit">Ghidra</span>
+                      <span class="tag-unit">x64dbg</span>
+                      <span class="tag-unit">GDB</span>
+                      <span class="tag-unit">dnSpy (.NET)</span>
+                      <span class="tag-unit">angr</span>
+                    </div>
+                  </div>
+                </div>
+                <details class="res-accordion">
+                  <summary class="res-accordion-summary">
+                    <span>展开精选学习资源与官方手册</span>
+                    <span class="acc-chevron">▾</span>
+                  </summary>
+                  <div class="res-accordion-body">
+                    <ul class="dir-links-footer">
+                  <li><a href="https://ctf-wiki.org/" target="_blank" rel="noopener noreferrer">CTF Wiki - Reverse 篇 ↗</a></li>
+                  <li><a href="https://www.bilibili.com/video/BV1Xi42197tA/" target="_blank" rel="noopener noreferrer">B站：顶尖战队透彻讲解逆向入门100集 ↗</a></li>
+                  <li><a href="https://www.bilibili.com/video/BV1f5X5Y5EYH/" target="_blank" rel="noopener noreferrer">B站：最系统CTF逆向入门100道真题 ↗</a></li>
+                </ul>
+                  </div>
+                </details>
+              </div>
+            </div>
+
+            <!-- 5. Pwn Card -->
+            <div class="dir-card-clean" data-dir="pwn" style="--dir-accent: #059669; display:none;">
+              <div class="card-watermark-bg"><img src="assets/trans_bg-pwn.png" alt="PWN Backdrop" /></div>
+              
+              <div class="dir-card-inner">
+                <div>
+                  <div class="dir-top-meta">
+                    <span class="dir-code-tag">PWN BINARY</span>
+                    <span class="dir-level">底层漏洞利用 · 难度: ★★★★★</span>
+                  </div>
+                  <h4>5. Pwn（二进制漏洞利用）</h4>
+                  <p class="dir-text">
+                    深入程序底层内存布局（栈溢出、Ret2text、ROP 链构造、堆利用 UAF）与 Linux 运行机制，寻找并利用二进制漏洞劫持控制流获取系统 Shell 权限。
+                  </p>
+                  <div class="tools-wrap">
+                    <span class="tools-caption">核心工具链</span>
+                    <div class="tag-cluster">
+                      <span class="tag-unit">pwntools (Python)</span>
+                      <span class="tag-unit">GDB (pwndbg)</span>
+                      <span class="tag-unit">checksec</span>
+                      <span class="tag-unit">ROPgadget</span>
+                      <span class="tag-unit">one_gadget</span>
+                    </div>
+                  </div>
+                </div>
+                <details class="res-accordion">
+                  <summary class="res-accordion-summary">
+                    <span>展开精选学习资源与官方手册</span>
+                    <span class="acc-chevron">▾</span>
+                  </summary>
+                  <div class="res-accordion-body">
+                    <ul class="dir-links-footer">
+                  <li><a href="https://ctf-wiki.org/" target="_blank" rel="noopener noreferrer">CTF Wiki - Pwn 篇 ↗</a></li>
+                  <li><a href="https://www.bilibili.com/video/BV1U7411z7Ki/" target="_blank" rel="noopener noreferrer">B站：CTF Linux Pwn 快速入门视频教程 ↗</a></li>
+                </ul>
+                  </div>
+                </details>
+              </div>
+            </div>
+          </div>
+            <div class="stage-nav-footer">
+              <button class="stage-nav-btn" onclick="switchStage(1, true)">
+                <span>← 返回 STAGE 01 · 环境与代码</span>
+              </button>
+              <button class="stage-nav-btn primary" onclick="switchStage(3, true)">
+                <span>进入下一阶段：STAGE 03 · 靶场与复盘</span>
+                <span>→</span>
+              </button>
+            </div>
+            </div>
+
+            <!-- PANEL 3 -->
+            <div class="stage-panel" id="stage-panel-3" style="display:none;">
+              <div class="stage-panel-intro">
+                <div class="stage-panel-meta">STAGE-03 铸剑砺刃期 · 专项攻坚沉淀</div>
+                <h3>第三阶段：实战靶场与 Writeup 复盘体系</h3>
+                <p>光看视频不动手等于白学，在合规沙盒靶场解题，养成四步法规范复盘习惯才能水到渠成。</p>
+              </div>
+              <!-- 导语区：点出 4 大主力，顺带收录 Bugku 链接 -->
+              <p style="font-size:0.88rem; color:var(--text-body); margin-bottom:1.15rem; line-height:1.6;">
+                零基础可先从 <strong style="color:var(--text-title);">CTFHub（技能树）</strong> 和 <strong style="color:var(--text-title);">CTFshow（新手杯）</strong> 入手，有一定手感后再刷 <strong style="color:var(--text-title);">NSSCTF</strong> 与 <strong style="color:var(--text-title);">BUUCTF</strong>。<span style="color:var(--text-muted); margin-left:4px;">（此外也可前往老牌入门站 <a href="https://ctf.bugku.com/" target="_blank" rel="noopener noreferrer" style="color:var(--primary); font-weight:600;">Bugku CTF ↗</a> 补充练习基础杂项与 Web 题）</span>
+              </p>
+
+              <!-- 4列工整黄金网格：桌面端1行4列，平板2列，手机1列 -->
+              <div class="arenas-grid-clean">
+                <div class="arena-box-clean">
+                  <div>
+                    <div class="arena-title-row">
+                      <strong>CTFHub</strong>
+                      <span class="arena-stage-tag" style="background:#eff6ff; color:#2563eb;">技能树模式</span>
+                    </div>
+                    <p class="arena-desc-txt">按细分知识点树状图闯关，稳扎稳打专项突破必备。</p>
+                  </div>
+                  <a href="https://www.ctfhub.com/" target="_blank" rel="noopener noreferrer" class="arena-cta-link">ctfhub.com ↗</a>
+                </div>
+
+                <div class="arena-box-clean">
+                  <div>
+                    <div class="arena-title-row">
+                      <strong>CTFshow</strong>
+                      <span class="arena-stage-tag" style="background:#ecfdf5; color:#059669;">萌新入门</span>
+                    </div>
+                    <p class="arena-desc-txt">新手杯题库梯度极其友好，适合循序渐进上手练习。</p>
+                  </div>
+                  <a href="https://ctf.show/" target="_blank" rel="noopener noreferrer" class="arena-cta-link">ctf.show ↗</a>
+                </div>
+
+                <div class="arena-box-clean">
+                  <div>
+                    <div class="arena-title-row">
+                      <strong>NSSCTF</strong>
+                      <span class="arena-stage-tag" style="background:#faf5ff; color:#7c3aed;">社区题解完备</span>
+                    </div>
+                    <p class="arena-desc-txt">题目新、配套题单与社区官方题解齐全，日常训练首选。</p>
+                  </div>
+                  <a href="https://www.nssctf.cn/" target="_blank" rel="noopener noreferrer" class="arena-cta-link">nssctf.cn ↗</a>
+                </div>
+
+                <div class="arena-box-clean">
+                  <div>
+                    <div class="arena-title-row">
+                      <strong>BUUCTF</strong>
+                      <span class="arena-stage-tag" style="background:#fffbeb; color:#d97706;">真题复现</span>
+                    </div>
+                    <p class="arena-desc-txt">历年真实省赛国赛原题复现平台，进阶刷题与赛前练手。</p>
+                  </div>
+                  <a href="https://buuoj.cn/" target="_blank" rel="noopener noreferrer" class="arena-cta-link">buuoj.cn ↗</a>
+                </div>
+              </div>
+
+          <!-- Writeup Generator -->
+          <div class="writeup-box">
+            <div class="writeup-header-row">
+              <h4>养成写 Writeup（解题复盘笔记）的习惯：四步法标准模板</h4>
+              <button class="btn-copy-clean" id="btn-copy-writeup">一键复制 Markdown 模板</button>
+            </div>
+
+            <div style="font-size:0.82rem; color:var(--text-body); margin-bottom:0.85rem;">
+              建议使用 Markdown 语法，配合 Obsidian / Typora / 语雀 / 飞书文档 记录。每道题做完简单记录以下四点：
+            </div>
+
+            <div class="writeup-steps-timeline">
+              <div class="writeup-timeline-item">
+                <div class="writeup-step-badge">01</div>
+                <div class="writeup-step-content">
+                  <div class="writeup-step-title">题目与线索</div>
+                  <div class="writeup-step-desc">给了什么文件、请求界面或提示？切入点在哪里？</div>
+                </div>
+              </div>
+              <div class="writeup-timeline-item">
+                <div class="writeup-step-badge">02</div>
+                <div class="writeup-step-content">
+                  <div class="writeup-step-title">解题推进过程</div>
+                  <div class="writeup-step-desc">关键观察点、使用的命令、脚本参数与推进步骤。</div>
+                </div>
+              </div>
+              <div class="writeup-timeline-item">
+                <div class="writeup-step-badge">03</div>
+                <div class="writeup-step-content">
+                  <div class="writeup-step-title">核心漏洞原理</div>
+                  <div class="writeup-step-desc">考查哪个安全漏洞或算法机制？为什么利用有效？</div>
+                </div>
+              </div>
+              <div class="writeup-timeline-item">
+                <div class="writeup-step-badge">04</div>
+                <div class="writeup-step-content">
+                  <div class="writeup-step-title">复盘与知识盲区</div>
+                  <div class="writeup-step-desc">卡在何处？补齐了哪个盲区？下次遇到特征先查什么？</div>
+                </div>
+              </div>
+            </div>
+
+            <details class="res-accordion writeup-accordion">
+              <summary class="res-accordion-summary">
+                <span>展开标准 Writeup (题解) Markdown 模板源码</span>
+                <span class="acc-chevron">▾</span>
+              </summary>
+              <div class="res-accordion-body">
+                <div class="code-preview-block" id="writeup-code-content"># [CTF比赛/靶场] [题目名称] Writeup
+
+- **出处平台**：NEWCTF / NSSCTF / CTFshow
+- **方向分类**：Web / Misc / Crypto / Reverse / Pwn
+- **解题日期**：2026-XX-XX
+
+## 1. 题目与线索
+- 题目附件/环境说明：
+- 关键特征识别与切入点：
+
+## 2. 解题过程与利用脚本
+```python
+# 关键利用脚本 / Payload
+```
+
+## 3. 核心漏洞原理分析
+- 漏洞类型（如 SQL 注入/反序列化/栈溢出）：
+- 原理机制解释：
+
+## 4. 复盘盲区与总结
+- 卡点记录：
+- 知识补全（网络协议/系统底层）：
+- 下次遇到相似特征的排查 Checklist：</div>
+              </div>
+            </details>
+          </div>
+            <div class="stage-nav-footer">
+              <button class="stage-nav-btn" onclick="switchStage(2, true)">
+                <span>← 返回 STAGE 02 · CTF五大方向</span>
+              </button>
+              <button class="stage-nav-btn primary" onclick="switchStage(4, true)">
+                <span>进入下一阶段：STAGE 04 · 工业实战演练</span>
+                <span>→</span>
+              </button>
+            </div>
+            </div>
+
+            <!-- PANEL 4 -->
+            <div class="stage-panel" id="stage-panel-4" style="display:none;">
+              <div class="stage-panel-intro">
+                <div class="stage-panel-meta">STAGE-04 实战远航期 · 工业工程交付</div>
+                <h3>第四阶段：超越 CTF——走向广阔的网络安全世界</h3>
+                <p>CTF 只是扎实的技术底座，真实世界有着更丰富的企业级红蓝对抗、内核 0day 挖掘与 AI 安全边界。</p>
+              </div>
+          <div class="beyond-grid-clean">
+            <div class="beyond-unit">
+              <div class="card-watermark-bg"><img src="assets/trans_bg-awd.png" alt="渗透测试与红蓝对抗" /></div>
+              <div class="beyond-unit-header">
+                <span class="beyond-tag-badge">⚔️ 攻防对抗</span>
+                <span class="beyond-sub-badge">Web / Misc 进阶</span>
+              </div>
+              <h4>渗透测试与红蓝对抗</h4>
+              <p>
+                从单点赛题走向企业级网络架构：内网渗透、域环境攻防、权限维持与应急响应，在授权攻防演练中检验实战综合实力。
+              </p>
+              <div class="beyond-chips-row">
+                <span class="beyond-chip">红蓝对抗</span>
+                <span class="beyond-chip">内网横向</span>
+                <span class="beyond-chip">应急响应</span>
+              </div>
+            </div>
+
+            <div class="beyond-unit">
+              <div class="card-watermark-bg"><img src="assets/trans_bg-vuln.png" alt="真实软件与系统漏洞挖掘" /></div>
+              <div class="beyond-unit-header">
+                <span class="beyond-tag-badge">🛡️ 漏洞挖掘</span>
+                <span class="beyond-sub-badge">Reverse / Pwn / Web 进阶</span>
+              </div>
+              <h4>真实软件与系统漏洞挖掘</h4>
+              <p>
+                从赛题走向真实开源组件、操作系统内核与 IoT 固件的未知漏洞挖掘（0day / 1day），掌握模糊测试（Fuzzing）并向各大 SRC 或 CVE 提交报告。
+              </p>
+              <div class="beyond-chips-row">
+                <span class="beyond-chip">0day / 1day</span>
+                <span class="beyond-chip">Fuzzing</span>
+                <span class="beyond-chip">SRC / CVE</span>
+              </div>
+            </div>
+
+            <div class="beyond-unit">
+              <div class="card-watermark-bg"><img src="assets/trans_bg-git.png" alt="安全研发与代码审计" /></div>
+              <div class="beyond-unit-header">
+                <span class="beyond-tag-badge">🛠️ 安全研发</span>
+                <span class="beyond-sub-badge">全方向工程融合</span>
+              </div>
+              <h4>安全研发与代码审计</h4>
+              <p>
+                从工程层面杜绝漏洞：参与开源安全工具链研发、编写自动化漏洞扫描器、分析大型软件项目架构，开展深度的白盒代码审计与安全编码落地。
+              </p>
+              <div class="beyond-chips-row">
+                <span class="beyond-chip">代码审计</span>
+                <span class="beyond-chip">安全工具链</span>
+                <span class="beyond-chip">DevSecOps</span>
+              </div>
+            </div>
+
+            <div class="beyond-unit">
+              <div class="card-watermark-bg"><img src="assets/trans_bg-ai.png" alt="AI 时代网络安全新边界" /></div>
+              <div class="beyond-unit-header">
+                <span class="beyond-tag-badge">🧠 AI 安全前沿</span>
+                <span class="beyond-sub-badge">新兴前沿交叉领域</span>
+              </div>
+              <h4>AI 时代网络安全新边界</h4>
+              <p>
+                探索大语言模型（LLM）与智能体系统在攻防两端的博弈：研究提示词注入（Prompt Injection）、模型越狱与数据投毒，并利用自主 Agent 实现半自动安全攻防。
+              </p>
+              <div class="beyond-chips-row">
+                <span class="beyond-chip">提示词注入</span>
+                <span class="beyond-chip">Agent协同</span>
+                <span class="beyond-chip">模型安全</span>
+              </div>
+            </div>
+          </div>
+            <div class="stage-nav-footer">
+              <button class="stage-nav-btn" onclick="switchStage(3, true)">
+                <span>← 返回 STAGE 03 · 靶场与复盘</span>
+              </button>
+            </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- CHAPTER 02: 实验室守则与法律红线 -->
+
+      <!-- CHAPTER 02: 网络安全极客公约与法律红线 (统一编号标题 + 双列并排对比) -->
+      <section id="section-rules" class="unboxed-section">
+        <div class="unboxed-section-header">
+          <div class="unboxed-title-row">
+            <span class="chapter-tag" style="background:#fef2f2; color:#dc2626; border-color:#fecaca;">02</span>
+            <h2 class="unboxed-title">网络安全极客公约与法律红线</h2>
+          </div>
+          <span class="unboxed-desc">知其黑，守其白 —— 技术本无善恶，法律与敬畏是唯一的准绳</span>
+        </div>
+
+        <div class="covenant-grid-duo">
+          <!-- 左卡：极客精神 -->
+          <div class="covenant-card-spirit">
+            <div class="covenant-card-head">
+              <span style="font-size:1.2rem;">🔍</span>
+              <h3 class="covenant-card-title">探究底层原理，独立排查报错</h3>
+            </div>
+            <p class="covenant-card-body">
+              深入理解操作系统与网络协议底层机制。做题遇到报错先查官方文档与日志，绝不死背参数当“脚本小子”，坚决杜绝盲目求答案的“伸手党”思维。
+            </p>
+          </div>
+
+          <!-- 右卡：法律红线 -->
+          <div class="covenant-card-alert">
+            <div class="covenant-card-head">
+              <span class="redline-law-badge">法律绝对红线</span>
+              <h3 class="covenant-card-title text-red">恪守法律红线，绝不越雷池一步</h3>
+            </div>
+            <p class="covenant-card-body text-red-sub">
+              《中华人民共和国网络安全法》第二十七条明文规定：任何技术学习与切磋<strong>必须严格限制在已获授权的合法靶场或本地沙盒环境中进行</strong>。严禁对未获书面授权的学校内网或互联网任何真实资产发起扫描、探测或漏洞利用。
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- CHAPTER 03: 新生实战通关打卡清单 (统一编号标题 03) -->
+      <section id="section-check" class="unboxed-section checklist-section-clean">
+        <div class="unboxed-section-header">
+          <div class="unboxed-title-row">
+            <span class="chapter-tag" style="background:#eff6ff; color:#2563eb; border-color:#bfdbfe;">03</span>
+            <h2 class="unboxed-title">新生实战通关打卡清单</h2>
+          </div>
+          <span class="unboxed-desc">完成一项勾选一项，进度自动保存在本地浏览器</span>
+        </div>
+        <div class="checklist-container-clean">
+          <div class="mono-eyebrow" style="margin-bottom:0.75rem;">ACHIEVEMENT // PROGRESSION_TRACKER</div>
+          <div class="check-header">
+            <strong>新手阶段通关任务 (8 项核心实操)</strong>
+            <div style="display:flex; align-items:center; gap:0.65rem;">
+              <span style="font-size:0.76rem; font-family:var(--font-mono); color:var(--text-muted);" id="progress-text">
+                完成度: 0% (0/8)
+              </span>
+              <div class="progress-track">
+                <div class="progress-bar" id="progress-bar-fill"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="checklist-grid" id="checklist-box">
+            <label class="check-row">
+              <input type="checkbox" data-idx="0">
+              <span>注册并登录实战攻防靶场平台 (ctf.example.com)</span>
+            </label>
+            <label class="check-row">
+              <input type="checkbox" data-idx="1">
+              <span>掌握 Python 基础语法（能看懂并修改自动化解题脚本）</span>
+            </label>
+            <label class="check-row">
+              <input type="checkbox" data-idx="2">
+              <span>在本地顺利安装并运行 Kali Linux 或 WSL2 终端环境</span>
+            </label>
+            <label class="check-row">
+              <input type="checkbox" data-idx="3">
+              <span>使用浏览器 F12 与 Burp Suite 抓包并分析 HTTP 请求结构</span>
+            </label>
+            <label class="check-row">
+              <input type="checkbox" data-idx="4">
+              <span>在靶场独立解出第 1 道入门赛题并提交拿到 flag</span>
+            </label>
+            <label class="check-row">
+              <input type="checkbox" data-idx="5">
+              <span>使用 Markdown 撰写并复盘第一篇四步法 Writeup</span>
+            </label>
+            <label class="check-row">
+              <input type="checkbox" data-idx="6">
+              <span>尝试使用 Cursor / Trae 或 AI Agent 辅助分析一段未知代码</span>
+            </label>
+            <label class="check-row">
+              <input type="checkbox" data-idx="7">
+              <span>选定 1~2 个最感兴趣的方向在靶场刷透新手题库</span>
+            </label>
+          </div>
+        </div>
+      </section>
+  </main>
+
+  <!-- Mobile Drawer Menu (Slide-Over) -->
+  <div class="mobile-drawer-backdrop" id="mobile-drawer">
+    <div class="mobile-drawer-panel">
+      <div>
+        <div class="drawer-top-row">
+          <strong>目录导航</strong>
+          <button class="btn-close-drawer" id="close-drawer-btn" aria-label="关闭菜单">✕</button>
+        </div>
+                <ul class="drawer-nav-list" id="drawer-nav-list">
+          <li><a href="#section-intro" class="drawer-nav-link">00 / 实验室先导与资源盘</a></li>
+          <li>
+            <a href="#section-stages" class="drawer-nav-link">01 / 四阶实战成长体系</a>
+            <div class="drawer-stage-chips">
+              <button class="drawer-stage-chip" onclick="switchStage(1, true); document.getElementById('mobile-drawer').classList.remove('open');">阶段 1</button>
+              <button class="drawer-stage-chip" onclick="switchStage(2, true); document.getElementById('mobile-drawer').classList.remove('open');">阶段 2</button>
+              <button class="drawer-stage-chip" onclick="switchStage(3, true); document.getElementById('mobile-drawer').classList.remove('open');">阶段 3</button>
+              <button class="drawer-stage-chip" onclick="switchStage(4, true); document.getElementById('mobile-drawer').classList.remove('open');">阶段 4</button>
+            </div>
+          </li>
+          <li><a href="#section-rules" class="drawer-nav-link">极客公约与法律红线</a></li>
+          <li><a href="#section-check" class="drawer-nav-link">新生实战通关打卡</a></li>
+        </ul>
+      </div>
+
+      <div style="padding-top:1rem; border-top:1px solid var(--border-light);">
+        <a href="https://ctf.example.com" target="_blank" rel="noopener noreferrer" class="btn-arena-link" style="width:100%; justify-content:center; padding:0.5rem;">
+          实战攻防靶场 (ctf.example.com) ↗
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="footer-content">
+      <div class="footer-left">
+        <p><strong>极客创新实验室 · 网络安全战队 出品</strong></p>
+        <span>ANLIQUN INNOVATION LAB · SECURITY DIVISION · 2026</span>
+      </div>
+      <div>
+        <button class="btn-top" id="btn-top">↑ 返回顶部</button>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Search Modal -->
+  <div class="modal-backdrop" id="search-modal">
+    <div class="modal-box">
+      <div class="search-head">
+        <input type="text" class="search-input" id="search-input-field" placeholder="搜索知识点、工具、教程或靶场 (如: Burp, Python, Web...)" />
+        <span class="search-kbd" id="close-search-btn" style="cursor:pointer;">ESC</span>
+      </div>
+      <ul class="search-res-list" id="search-res-list">
+        <!-- Rendered via JS -->
+      </ul>
+    </div>
+  </div>
+
+  <!-- Toast Box -->
+  <div class="toast-box" id="toast-notify">已成功复制标准 Writeup 模板到剪贴板！</div>
+
+  <!-- Client-Side Runtime Engine -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      // 1. Reading Progress
+      window.addEventListener("scroll", function () {
+        const docElem = document.documentElement;
+        const total = docElem.scrollHeight - docElem.clientHeight;
+        const pct = total > 0 ? (docElem.scrollTop / total) * 100 : 0;
+        document.getElementById("reading-progress").style.width = pct + "%";
+      });
+
+      // 2. Precision ScrollSpy for Desktop Top Navigation & Mobile Drawer
+      const trackedSections = [
+        document.getElementById('section-intro'),
+        document.getElementById('section-stages'),
+        document.getElementById('section-rules'),
+        document.getElementById('section-check')
+      ].filter(Boolean);
+
+      const topNavAnchors = document.querySelectorAll(".header-anchor-link");
+      const drawerLinks = document.querySelectorAll(".drawer-nav-link");
+
+      function updateActiveNav() {
+        const triggerPoint = window.innerHeight * 0.35;
+        let currentId = "";
+
+        trackedSections.forEach(function (sec) {
+          const rect = sec.getBoundingClientRect();
+          if (rect.top <= triggerPoint && rect.bottom >= triggerPoint) {
+            currentId = sec.getAttribute("id");
+          }
+        });
+
+        // Edge case fallbacks
+        if (!currentId && trackedSections.length > 0) {
+          if (window.scrollY < 200) {
+            currentId = trackedSections[0].getAttribute("id");
+          } else {
+            const docHeight = document.documentElement.scrollHeight;
+            if (window.scrollY + window.innerHeight >= docHeight - 80) {
+              currentId = trackedSections[trackedSections.length - 1].getAttribute("id");
+            }
+          }
+        }
+
+        topNavAnchors.forEach(function (link) {
+          link.classList.toggle("active", link.getAttribute("href") === "#" + currentId);
+        });
+
+        drawerLinks.forEach(function (link) {
+          link.classList.toggle("active", link.getAttribute("href") === "#" + currentId);
+        });
+      }
+
+      window.addEventListener("scroll", updateActiveNav, { passive: true });
+      window.addEventListener("resize", updateActiveNav, { passive: true });
+      document.addEventListener("DOMContentLoaded", updateActiveNav);
+      updateActiveNav();
+
+      // 4. Toast Notification
+      const toast = document.getElementById("toast-notify");
+      let toastTimer = null;
+      function showToast(msg) {
+        toast.textContent = msg;
+        toast.classList.add("show");
+        if (toastTimer) clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => toast.classList.remove("show"), 2500);
+      }
+
+      // 5. Writeup Copy
+      const btnCopy = document.getElementById("btn-copy-writeup");
+      const codeBlock = document.getElementById("writeup-code-content");
+      btnCopy.addEventListener("click", function () {
+        const text = codeBlock.textContent;
+        navigator.clipboard.writeText(text).then(function () {
+          showToast("已成功复制标准 Writeup 模板到剪贴板！");
+        }).catch(function () {
+          const ta = document.createElement("textarea");
+          ta.value = text;
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand("copy");
+          document.body.removeChild(ta);
+          showToast("已成功复制标准 Writeup 模板到剪贴板！");
+        });
+      });
+
+      // 6. Checklist with LocalStorage
+      const checklistBox = document.getElementById("checklist-box");
+      const checkboxes = checklistBox.querySelectorAll("input[type='checkbox']");
+      const progressBar = document.getElementById("progress-bar-fill");
+      const progressText = document.getElementById("progress-text");
+
+      const saved = JSON.parse(localStorage.getItem("anliqun_sec_checklist_v2") || "[]");
+
+      checkboxes.forEach(function (cb) {
+        const idx = cb.getAttribute("data-idx");
+        if (saved.includes(idx)) {
+          cb.checked = true;
+          cb.parentElement.classList.add("completed");
+        }
+
+        cb.addEventListener("change", function () {
+          if (cb.checked) {
+            cb.parentElement.classList.add("completed");
+          } else {
+            cb.parentElement.classList.remove("completed");
+          }
+          updateChecklist();
+        });
+      });
+
+      function updateChecklist() {
+        const doneList = [];
+        checkboxes.forEach(function (c) {
+          if (c.checked) doneList.push(c.getAttribute("data-idx"));
+        });
+        localStorage.setItem("anliqun_sec_checklist_v2", JSON.stringify(doneList));
+
+        const total = checkboxes.length;
+        const done = doneList.length;
+        const pct = Math.round((done / total) * 100);
+
+        progressBar.style.width = pct + "%";
+
+      // Sync Thumb Bottom Bar Checklist Stat
+      const thumbStat = document.getElementById("thumb-check-stat");
+      if (thumbStat) {
+        thumbStat.textContent = `${done}/${total}`;
+      }
+
+        progressText.textContent = `完成度: ${pct}% (${done}/${total})`;
+
+        if (done === total) {
+          showToast("太棒了！你已达成全部新手实战打卡任务！");
+        }
+      }
+      updateChecklist();
+
+      // 7. Back to Top
+      document.getElementById("btn-top").addEventListener("click", function () {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+
+      // 8. Mobile Drawer Menu Logic
+      const mobileDrawer = document.getElementById("mobile-drawer");
+      const mobileToggleBtn = document.getElementById("mobile-drawer-toggle");
+      const closeDrawerBtn = document.getElementById("close-drawer-btn");
+
+      function openDrawer() {
+        mobileDrawer.classList.add("open");
+      }
+
+      function closeDrawer() {
+        mobileDrawer.classList.remove("open");
+      }
+
+      mobileToggleBtn.addEventListener("click", openDrawer);
+
+      const thumbMenuTrigger = document.getElementById("thumb-menu-trigger");
+      if (thumbMenuTrigger) {
+        thumbMenuTrigger.addEventListener("click", openDrawer);
+      }
+
+      closeDrawerBtn.addEventListener("click", closeDrawer);
+      mobileDrawer.addEventListener("click", function (e) {
+        if (e.target === mobileDrawer) closeDrawer();
+      });
+
+      drawerLinks.forEach(function (link) {
+        link.addEventListener("click", function () {
+          closeDrawer();
+        });
+      });
+
+      // 9. Search Modal & Index
+      const searchItems = [
+        { title: "Python 快速入门 (林粒粒动画)", tag: "阶段一", link: "https://www.bilibili.com/video/BV1Jgf6YvE8e" },
+        { title: "C 语言程序设计 (浙大翁恺)", tag: "阶段一", link: "https://www.bilibili.com/video/BV1th411z7sn/" },
+        { title: "OverTheWire Bandit Linux 闯关", tag: "阶段一", link: "https://overthewire.org/wargames/bandit/" },
+        { title: "DeepSeek / Kimi / Claude AI 赛博导师", tag: "AI协同", link: "#section-stage1" },
+        { title: "Cursor / Trae / Windsurf AI 原生 IDE", tag: "AI协同", link: "#section-stage1" },
+        { title: "Claude Code / Cline 终端自主 Agent", tag: "AI协同", link: "#section-stage1" },
+        { title: "dsh-purge 破甲工具", tag: "AI协同", link: "https://github.com/YuJunZhiXue/dsh-purge" },
+        { title: "Web 网页攻防与 Burp Suite / F12", tag: "Web方向", link: "#section-stage2" },
+        { title: "PortSwigger Web Security Academy", tag: "Web方向", link: "https://portswigger.net/web-security" },
+        { title: "Misc 隐写术与 Wireshark 流量包分析", tag: "Misc方向", link: "#section-stage2" },
+        { title: "Crypto 密码学与 CryptoHack", tag: "Crypto方向", link: "https://www.cryptohack.org/challenges/introduction/" },
+        { title: "Reverse 逆向工程与 IDA Pro / Ghidra", tag: "Reverse方向", link: "#section-stage2" },
+        { title: "Pwn 二进制漏洞利用与 pwntools / GDB", tag: "Pwn方向", link: "#section-stage2" },
+        { title: "CTFHub 技能树闯关靶场", tag: "靶场推荐", link: "https://www.ctfhub.com/" },
+        { title: "CTFshow 萌新入门新手杯", tag: "靶场推荐", link: "https://ctf.show/" },
+        { title: "NSSCTF 题单与社区题解平台", tag: "靶场推荐", link: "https://www.nssctf.cn/" },
+        { title: "BUUCTF 历年国赛真题在线复现", tag: "靶场推荐", link: "https://buuoj.cn/" },
+        { title: "Hello CTF 零基础入门必读手册", tag: "权威百科", link: "https://hello-ctf.com/" },
+        { title: "CTF Wiki 网络安全竞赛权威知识库", tag: "权威百科", link: "https://ctf-wiki.org/" },
+        { title: "Writeup 四维标准化复盘模板", tag: "复盘沉淀", link: "#section-stage3" },
+        { title: "AI 安全与大模型攻防 (Red Teaming)", tag: "阶段四", link: "#section-stage4" },
+        { title: "CTF 实战攻防靶场 (ctf.example.com)", tag: "专属靶场", link: "https://ctf.example.com" }
+      ];
+
+      const modal = document.getElementById("search-modal");
+      const searchBtn = document.getElementById("open-search-btn");
+      const closeBtn = document.getElementById("close-search-btn");
+      const searchField = document.getElementById("search-input-field");
+      const resList = document.getElementById("search-res-list");
+
+      function openSearch() {
+        modal.classList.add("open");
+        searchField.value = "";
+        renderResults("");
+        setTimeout(() => searchField.focus(), 50);
+      }
+
+      function closeSearch() {
+        modal.classList.remove("open");
+      }
+
+      searchBtn.addEventListener("click", openSearch);
+      closeBtn.addEventListener("click", closeSearch);
+      modal.addEventListener("click", (e) => { if (e.target === modal) closeSearch(); });
+
+      window.addEventListener("keydown", function (e) {
+        if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
+          e.preventDefault();
+          modal.classList.contains("open") ? closeSearch() : openSearch();
+        }
+        if (e.key === "Escape" && modal.classList.contains("open")) {
+          closeSearch();
+        }
+      });
+
+      searchField.addEventListener("input", function () {
+        renderResults(searchField.value.trim().toLowerCase());
+      });
+
+      function renderResults(q) {
+        resList.innerHTML = "";
+        const filtered = searchItems.filter(item => !q || item.title.toLowerCase().includes(q) || item.tag.toLowerCase().includes(q));
+
+        if (filtered.length === 0) {
+          resList.innerHTML = '<li style="padding:1rem; text-align:center; font-size:0.82rem; color:var(--text-muted);">未找到相关结果</li>';
+          return;
+        }
+
+        filtered.slice(0, 8).forEach(item => {
+          const li = document.createElement("li");
+          li.className = "search-item";
+          li.innerHTML = `
+            <span class="search-item-title">${item.title}</span>
+            <span class="search-item-tag">${item.tag}</span>
+          `;
+          li.addEventListener("click", function () {
+            closeSearch();
+            if (item.link.startsWith("#")) {
+              const el = document.querySelector(item.link);
+              if (el) el.scrollIntoView({ behavior: "smooth" });
+            } else {
+              window.open(item.link, "_blank");
+            }
+          });
+          resList.appendChild(li);
+        });
+      }
+
+      // 10. Mobile Bottom Floating Bar Auto-Hide on Scroll Down, Reveal on Scroll Up
+      const bottomBar = document.getElementById("mobile-bottom-bar");
+      if (bottomBar) {
+        let lastScrollY = window.scrollY;
+        const scrollThreshold = 10;
+
+        window.addEventListener("scroll", function () {
+          const currentScrollY = window.scrollY;
+          const delta = currentScrollY - lastScrollY;
+
+          // Always show when near top of page
+          if (currentScrollY < 60) {
+            bottomBar.classList.remove("hidden");
+            lastScrollY = currentScrollY;
+            return;
+          }
+
+          if (Math.abs(delta) > scrollThreshold) {
+            if (delta > 0) {
+              // Scrolling down -> hide
+              bottomBar.classList.add("hidden");
+            } else {
+              // Scrolling up -> show
+              bottomBar.classList.remove("hidden");
+            }
+            lastScrollY = currentScrollY;
+          }
+        }, { passive: true });
+      }
+
+      // 11. Helper to smoothly slide any gallery container
+      window.scrollGallery = function (containerClass, direction) {
+        const el = document.querySelector('.' + containerClass) || document.getElementById(containerClass);
+        if (el) {
+          const amount = Math.max(el.clientWidth * 0.72, 300);
+          el.scrollBy({ left: direction * amount, behavior: 'smooth' });
+        }
+      };
+
+      // 12. Center-Screen Horizontal Scroll-Down Scrub Tour (Triggers once per page visit, resets on reload)
+      (function initHorizontalScrollTour() {
+        const dirsGrid = document.querySelector('.dirs-grid');
+        if (!dirsGrid) return;
+
+        // In-memory flag: true once tour finishes, false on fresh page load / reload
+        let horizontalTourDone = false;
+
+        function handleWheel(e) {
+          if (horizontalTourDone) return;
+
+          // Check if dirsGrid is roughly centered in the viewport
+          const rect = dirsGrid.getBoundingClientRect();
+          const vh = window.innerHeight;
+          const isCentered = rect.top <= vh * 0.45 && rect.bottom >= vh * 0.55;
+
+          // Only intercept downwards wheel
+          if (isCentered && e.deltaY > 0) {
+            const maxScroll = dirsGrid.scrollWidth - dirsGrid.clientWidth;
+            if (dirsGrid.scrollLeft < maxScroll - 15) {
+              e.preventDefault();
+              dirsGrid.scrollLeft += Math.min(e.deltaY * 1.5, 120);
+              return false;
+            } else {
+              // Finished horizontal sweep! Mark done so normal vertical scroll resumes
+              horizontalTourDone = true;
+            }
+          }
+        }
+
+        // Mobile Touch Handling
+        let touchY = 0;
+        function handleTouchStart(e) {
+          if (e.touches && e.touches.length > 0) touchY = e.touches[0].clientY;
+        }
+
+        function handleTouchMove(e) {
+          if (horizontalTourDone || !e.touches || e.touches.length === 0) return;
+          const currentY = e.touches[0].clientY;
+          const deltaY = touchY - currentY; // positive when swiping up (scrolling down)
+
+          if (deltaY > 0) {
+            const rect = dirsGrid.getBoundingClientRect();
+            const vh = window.innerHeight;
+            const isCentered = rect.top <= vh * 0.45 && rect.bottom >= vh * 0.55;
+
+            if (isCentered) {
+              const maxScroll = dirsGrid.scrollWidth - dirsGrid.clientWidth;
+              if (dirsGrid.scrollLeft < maxScroll - 15) {
+                e.preventDefault();
+                dirsGrid.scrollLeft += deltaY * 1.3;
+                touchY = currentY;
+                return false;
+              } else {
+                horizontalTourDone = true;
+              }
+            }
+          }
+        }
+
+        window.addEventListener('wheel', handleWheel, { passive: false });
+        window.addEventListener('touchstart', handleTouchStart, { passive: true });
+        window.addEventListener('touchmove', handleTouchMove, { passive: false });
+      })();
+    });
+  
+      // --- Stage Switcher Engine with Auto Viewport Rollback ---
+      window.switchStage = function (stageNum, shouldScroll = false) {
+        const num = String(stageNum);
+        
+        // Update stepper buttons
+        document.querySelectorAll('.stage-step-btn').forEach(btn => {
+          btn.classList.toggle('active', btn.getAttribute('data-stage') === num);
+        });
+
+        // Update stage panels
+        for (let i = 1; i <= 4; i++) {
+          const panel = document.getElementById('stage-panel-' + i);
+          if (panel) {
+            panel.style.display = (i === stageNum) ? 'block' : 'none';
+          }
+        }
+
+        // Auto rollback to top of section-stages if user is further down
+        const stageSection = document.getElementById('section-stages');
+        if (stageSection && (shouldScroll || window.scrollY > stageSection.offsetTop)) {
+          stageSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      };
+
+      // --- Direction Tabs Logic (Always Single Card View) ---
+      const tabBtns = document.querySelectorAll('.tab-clean-btn');
+      const dirCards = document.querySelectorAll('.dir-card-clean');
+
+      tabBtns.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          tabBtns.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          const filter = btn.getAttribute('data-filter');
+
+          dirCards.forEach(c => {
+            c.style.display = (c.getAttribute('data-dir') === filter) ? 'flex' : 'none';
+          });
+        });
+      });
+
+  </script>
+
+  <!-- Mobile Bottom Floating Thumb Bar (Single-Hand Navigation Anchor) -->
+  <aside class="mobile-bottom-bar" id="mobile-bottom-bar" aria-label="移动端快速操作栏">
+    <a href="#section-check" class="thumb-nav-brand" title="实战打卡进度">
+      <span class="thumb-brand-shield">🛡️</span>
+      <span class="thumb-checklist-stat" id="thumb-check-stat">0/8</span>
+    </a>
+    <div class="thumb-actions">
+      <a href="mindmap.html" class="thumb-btn-chip thumb-btn-primary">
+        <span>技能树 ↗</span>
+      </a>
+      <a href="https://ctf.example.com" target="_blank" rel="noopener noreferrer" class="thumb-btn-chip thumb-btn-ghost">
+        <span>靶场 ↗</span>
+      </a>
+      <button class="thumb-btn-chip thumb-btn-ghost" id="thumb-menu-trigger" aria-label="打开目录">
+        <span>目录 ☰</span>
+      </button>
+    </div>
+  </aside>
+
+</body>
+</html>
