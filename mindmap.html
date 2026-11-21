@@ -1,0 +1,1259 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>网络安全自学技术全景思维导图 | 极客创新实验室 · 学习资产库</title>
+  <meta name="description" content="极客创新实验室·网络安全部出品：大一新生自学网络安全与CTF技术全景树，涵盖8大技术分支、80项关键技能与80条精选学习资源。" />
+  <style>
+    /* ==========================================================================
+       VIBRANT SATURATED LIGHT DESIGN SYSTEM (CYBERSECURITY SPECIFICATION)
+       ========================================================================== */
+    :root {
+      --bg-page: #f0f4f9;
+      --bg-card: #ffffff;
+      --bg-header-band: #e2eaf4;
+      --bg-subtle: #f8fafc;
+      --bg-active: #dbeafe;
+
+      --border-light: #cbd5e1;
+      --border-medium: #94a3b8;
+      --border-strong: #64748b;
+      --border-focus: #2563eb;
+
+      --text-title: #0f172a;
+      --text-body: #1e293b;
+      --text-muted: #475569;
+      --text-light: #64748b;
+
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --primary-subtle: #eff6ff;
+      --primary-border: #93c5fd;
+
+      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      --font-mono: "JetBrains Mono", "SFMono-Regular", Consolas, Menlo, monospace;
+
+      --shadow-card: 0 2px 5px -1px rgba(15, 23, 42, 0.08), 0 1px 3px -1px rgba(15, 23, 42, 0.05);
+      --shadow-hover: 0 6px 12px -2px rgba(37, 99, 235, 0.12), 0 3px 6px -2px rgba(15, 23, 42, 0.06);
+      --line-color: #94a3b8;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      font-family: var(--font-sans);
+      font-size: 16px;
+      line-height: 1.6;
+      background-color: var(--bg-page);
+      color: var(--text-body);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Top Sticky Navigation */
+    .top-nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(10px);
+      border-bottom: 2px solid #bfdbfe;
+      min-height: 58px;
+      display: flex;
+      align-items: center;
+      padding: 0 24px;
+      box-shadow: 0 1px 4px rgba(15, 23, 42, 0.04);
+    }
+
+    .nav-container {
+      max-width: 1440px;
+      width: 100%;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--text-title);
+      text-decoration: none;
+    }
+
+    .shield-badge {
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      background: #2563eb;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 5px rgba(37, 99, 235, 0.22);
+    }
+
+    .nav-brand-tag {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 9px;
+      border-radius: 999px;
+      background: #eff6ff;
+      color: #2563eb;
+      border: 1px solid #bfdbfe;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .nav-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12.5px;
+      font-weight: 700;
+      padding: 7px 14px;
+      border-radius: 6px;
+      text-decoration: none;
+      transition: all 0.15s ease;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .nav-btn-secondary {
+      background: #ffffff;
+      color: #1e293b;
+      border: 1.5px solid #cbd5e1;
+    }
+
+    .nav-btn-secondary:hover {
+      background: #eff6ff;
+      color: #2563eb;
+      border-color: #93c5fd;
+    }
+
+    .nav-btn-primary {
+      background: #2563eb;
+      color: #ffffff;
+      border: 1px solid #2563eb;
+      box-shadow: 0 2px 6px rgba(37, 99, 235, 0.22);
+    }
+
+    .nav-btn-primary:hover {
+      background: #1d4ed8;
+      border-color: #1d4ed8;
+      box-shadow: 0 3px 8px rgba(37, 99, 235, 0.3);
+    }
+
+    /* Main Container */
+    .main-wrap {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 28px 24px 80px;
+    }
+
+    /* Header Banner */
+    .header-banner {
+      background: linear-gradient(180deg, #ffffff 0%, #f8faff 100%);
+      border: 1px solid #cbd5e1;
+      border-left: 5px solid var(--primary);
+      border-radius: 12px;
+      padding: 26px 30px;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow-card);
+    }
+
+    .breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+      font-family: var(--font-mono);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .breadcrumb a {
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    .breadcrumb a:hover {
+      text-decoration: underline;
+    }
+
+    .asset-title {
+      font-size: 25px;
+      font-weight: 800;
+      color: var(--text-title);
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .asset-desc {
+      font-size: 14px;
+      color: var(--text-body);
+      line-height: 1.65;
+      max-width: 980px;
+    }
+
+    /* Interactive Toolbar */
+    .toolbar-card {
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      border-radius: 10px;
+      padding: 14px 20px;
+      margin-bottom: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      box-shadow: var(--shadow-card);
+    }
+
+    .toolbar-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .search-box {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .search-box input {
+      padding: 7px 12px 7px 34px;
+      font-size: 13px;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 6px;
+      width: 270px;
+      outline: none;
+      transition: all 0.15s ease;
+      background: #ffffff;
+      color: var(--text-title);
+    }
+
+    .search-box input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+      width: 320px;
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 10px;
+      color: #64748b;
+      pointer-events: none;
+    }
+
+    .tool-btn {
+      font-size: 13px;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: 6px;
+      border: 1.5px solid #cbd5e1;
+      background: #ffffff;
+      color: var(--text-body);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .tool-btn:hover {
+      background: #f1f5f9;
+      border-color: #94a3b8;
+      color: var(--text-title);
+    }
+
+    .filter-pills {
+      display: flex;
+      background: #e2e8f0;
+      padding: 3px;
+      border-radius: 6px;
+      gap: 3px;
+    }
+
+    .filter-pill {
+      font-size: 12.5px;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 4px;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .filter-pill.active {
+      background: #ffffff;
+      color: #1d4ed8;
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.1);
+    }
+
+    .meta-stat {
+      font-size: 13px;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .meta-stat strong {
+      color: var(--primary);
+      font-weight: 800;
+    }
+
+    /* Tree Card Container */
+    .tree-card {
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      border-radius: 12px;
+      padding: 32px 28px;
+      box-shadow: var(--shadow-card);
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .mobile-scroll-hint {
+      display: none;
+      font-size: 12px;
+      font-weight: 600;
+      color: #1d4ed8;
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      padding: 8px 14px;
+      border-radius: 6px;
+      margin-bottom: 14px;
+    }
+
+    /* Tree Architecture Styles */
+    ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    ul.tree {
+      margin-top: 8px;
+      min-width: 760px;
+    }
+
+    ul.tree ul {
+      position: relative;
+      margin-left: 32px;
+      padding-left: 32px;
+    }
+
+    ul.tree ul::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: var(--line-color);
+    }
+
+    li {
+      position: relative;
+    }
+
+    summary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      position: relative;
+      cursor: pointer;
+      list-style: none;
+      padding: 6px 0;
+      user-select: none;
+    }
+
+    summary::-webkit-details-marker {
+      display: none;
+    }
+
+    summary::before {
+      content: "";
+      position: absolute;
+      left: -32px;
+      top: 50%;
+      width: 32px;
+      height: 2px;
+      background: var(--line-color);
+    }
+
+    .root-node {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+      border: 1.5px solid rgba(255, 255, 255, 0.4);
+      color: #ffffff;
+      font-weight: 800;
+      font-size: 15px;
+      padding: 9px 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.22);
+    }
+
+    .root-tag {
+      font-size: 11px;
+      font-weight: 700;
+      background: rgba(255, 255, 255, 0.22);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      color: #ffffff;
+      padding: 2px 7px;
+      border-radius: 4px;
+    }
+
+    li.branch > details > summary .label {
+      background: var(--c, #0284c7);
+      color: #ffffff;
+      font-weight: 800;
+      font-size: 14px;
+      padding: 7px 18px;
+      border-radius: 999px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.12);
+      transition: all 0.15s ease;
+      letter-spacing: 0.2px;
+    }
+
+    li.branch > details > summary:hover .label {
+      transform: translateY(-1px);
+      filter: brightness(1.06);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.18);
+    }
+
+    li.lv2 > details > summary .label {
+      background: #ffffff;
+      color: var(--c, #0f172a);
+      font-weight: 800;
+      font-size: 12.5px;
+      border: 2px solid var(--c, #0f172a);
+      padding: 3px 12px;
+      border-radius: 6px;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+      transition: all 0.15s;
+    }
+
+    li.lv2 > details > summary:hover .label {
+      background: var(--bg-subtle);
+      filter: brightness(0.96);
+    }
+
+    summary .label::after {
+      content: " ▾";
+      font-size: 11px;
+      opacity: 0.8;
+    }
+
+    details:not([open]) > summary .label::after {
+      content: " ▸";
+    }
+
+    .row {
+      position: relative;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      padding: 7px 12px;
+      margin: 3px 0;
+      border-radius: 6px;
+      transition: background 0.15s ease;
+    }
+
+    .row:hover {
+      background: #f1f5f9;
+    }
+
+    .row::before {
+      content: "";
+      position: absolute;
+      left: -32px;
+      top: 50%;
+      width: 32px;
+      height: 2px;
+      background: var(--line-color);
+    }
+
+    li.leaf .k {
+      color: var(--c, #1e293b);
+      font-weight: 700;
+      font-size: 13px;
+      white-space: nowrap;
+      background: color-mix(in srgb, var(--c) 8%, #ffffff);
+      border: 1.5px solid color-mix(in srgb, var(--c) 30%, #ffffff);
+      padding: 2.5px 9px;
+      border-radius: 5px;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+    }
+
+    li.leaf .v {
+      color: var(--text-body);
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    a.btn-link {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: #1d4ed8;
+      text-decoration: none;
+      border: 1px solid #93c5fd;
+      background: #eff6ff;
+      border-radius: 5px;
+      padding: 2.5px 9px;
+      white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      transition: all 0.15s;
+    }
+
+    a.btn-link:hover {
+      background: #2563eb;
+      border-color: #2563eb;
+      color: #ffffff;
+      box-shadow: 0 2px 4px rgba(37, 99, 235, 0.25);
+    }
+
+    .leaf.hidden {
+      display: none !important;
+    }
+
+    /* Footer Note */
+    .footer-note {
+      margin-top: 24px;
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      border-radius: 12px;
+      padding: 22px 26px;
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.8;
+      box-shadow: var(--shadow-card);
+    }
+
+    .footer-note strong {
+      color: var(--text-title);
+    }
+
+    .footer-bottom {
+      text-align: center;
+      margin-top: 24px;
+      font-size: 12.5px;
+      color: var(--text-light);
+    }
+
+    /* Tool buttons row desktop default */
+    .tool-buttons-row {
+      display: inline-flex;
+      gap: 8px;
+    }
+
+    /* ==========================================================================
+       MOBILE-FIRST RESPONSIVE PERFECTION (< 768px)
+       ========================================================================== */
+    @media (max-width: 768px) {
+      .top-nav {
+        padding: 8px 12px !important;
+        min-height: auto !important;
+      }
+
+      .nav-container {
+        flex-direction: row !important;
+        flex-wrap: wrap !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        gap: 8px !important;
+      }
+
+      .nav-brand {
+        font-size: 13.5px !important;
+        gap: 8px !important;
+      }
+
+      .shield-badge {
+        width: 24px !important;
+        height: 24px !important;
+      }
+
+      .shield-badge svg {
+        width: 14px !important;
+        height: 14px !important;
+      }
+
+      .nav-brand-tag {
+        display: none !important;
+      }
+
+      .nav-actions {
+        display: flex !important;
+        width: 100% !important;
+        gap: 8px !important;
+      }
+
+      .nav-btn {
+        flex: 1 !important;
+        justify-content: center !important;
+        font-size: 11.5px !important;
+        padding: 6px 8px !important;
+        min-height: 36px !important;
+      }
+
+      .main-wrap {
+        padding: 12px 10px 60px !important;
+      }
+
+      .header-banner {
+        padding: 16px 14px !important;
+        border-left-width: 4px !important;
+        margin-bottom: 14px !important;
+        border-radius: 10px !important;
+      }
+
+      .breadcrumb {
+        font-size: 10.5px !important;
+        flex-wrap: wrap !important;
+        gap: 4px !important;
+        margin-bottom: 6px !important;
+      }
+
+      .asset-title {
+        font-size: 18px !important;
+        gap: 8px !important;
+        line-height: 1.35 !important;
+      }
+
+      .asset-title svg {
+        width: 22px !important;
+        height: 22px !important;
+      }
+
+      .asset-desc {
+        font-size: 12.5px !important;
+        line-height: 1.6 !important;
+      }
+
+      .toolbar-card {
+        padding: 12px 10px !important;
+        gap: 10px !important;
+        border-radius: 10px !important;
+        margin-bottom: 14px !important;
+      }
+
+      .toolbar-left {
+        width: 100% !important;
+        gap: 8px !important;
+        flex-direction: column !important;
+        align-items: stretch !important;
+      }
+
+      .search-box {
+        width: 100% !important;
+      }
+
+      .search-box input {
+        width: 100% !important;
+        font-size: 13px !important;
+        padding: 8px 12px 8px 34px !important;
+      }
+
+      .tool-buttons-row {
+        display: flex !important;
+        width: 100% !important;
+        gap: 8px !important;
+      }
+
+      .tool-btn {
+        flex: 1 !important;
+        text-align: center !important;
+        padding: 7px 6px !important;
+        min-height: 36px !important;
+        font-size: 12px !important;
+      }
+
+      .filter-pills {
+        width: 100% !important;
+        display: flex !important;
+        justify-content: space-between !important;
+      }
+
+      .filter-pill {
+        flex: 1 !important;
+        text-align: center !important;
+        padding: 6px 4px !important;
+        font-size: 12px !important;
+        min-height: 32px !important;
+      }
+
+      .meta-stat {
+        width: 100% !important;
+        font-size: 11.5px !important;
+        justify-content: center !important;
+        text-align: center !important;
+      }
+
+      /* Native Responsive Tree for Mobile */
+      .mobile-scroll-hint {
+        display: none !important;
+      }
+
+      .tree-card {
+        padding: 14px 10px !important;
+        border-radius: 10px !important;
+        overflow-x: visible !important;
+      }
+
+      ul.tree {
+        min-width: unset !important;
+        width: 100% !important;
+        margin-top: 4px !important;
+      }
+
+      ul.tree ul {
+        margin-left: 8px !important;
+        padding-left: 12px !important;
+      }
+
+      ul.tree ul::before {
+        left: 0 !important;
+        width: 2px !important;
+      }
+
+      summary::before {
+        left: -12px !important;
+        width: 12px !important;
+      }
+
+      .row::before {
+        left: -12px !important;
+        width: 12px !important;
+      }
+
+      summary {
+        min-height: 40px !important;
+        padding: 6px 0 !important;
+      }
+
+      .root-node {
+        width: 100% !important;
+        box-sizing: border-box !important;
+        justify-content: space-between !important;
+        padding: 10px 14px !important;
+        font-size: 13.5px !important;
+        flex-wrap: wrap !important;
+        gap: 6px !important;
+      }
+
+      li.branch {
+        margin-top: 14px !important;
+      }
+
+      li.branch > details > summary {
+        width: 100% !important;
+      }
+
+      li.branch > details > summary .label {
+        font-size: 13px !important;
+        padding: 6px 14px !important;
+        letter-spacing: 0 !important;
+        white-space: normal !important;
+        line-height: 1.4 !important;
+      }
+
+      li.lv2 {
+        margin-top: 8px !important;
+        margin-bottom: 4px !important;
+      }
+
+      li.lv2 > details > summary {
+        min-height: 36px !important;
+      }
+
+      li.lv2 > details > summary .label {
+        font-size: 11.5px !important;
+        padding: 3px 10px !important;
+      }
+
+      /* Leaf items become clean, comfortable touch cards */
+      .row {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 6px !important;
+        padding: 10px 12px !important;
+        margin: 8px 0 !important;
+        background: #ffffff !important;
+        border: 1.5px solid #cbd5e1 !important;
+        border-left: 3.5px solid var(--c, #0284c7) !important;
+        border-radius: 8px !important;
+        box-shadow: 0 1px 3px rgba(15, 23, 42, 0.05) !important;
+      }
+
+      li.leaf .k {
+        font-size: 12.5px !important;
+        font-weight: 800 !important;
+        display: inline-block !important;
+        white-space: normal !important;
+        word-break: break-word !important;
+      }
+
+      li.leaf .v {
+        font-size: 12px !important;
+        line-height: 1.55 !important;
+        color: #334155 !important;
+      }
+
+      a.btn-link {
+        font-size: 11.5px !important;
+        font-weight: 700 !important;
+        padding: 5px 12px !important;
+        margin-top: 3px !important;
+        border-radius: 6px !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        min-height: 32px !important;
+        width: auto !important;
+      }
+
+      .footer-note {
+        padding: 16px 14px !important;
+        font-size: 12px !important;
+        line-height: 1.7 !important;
+        margin-top: 18px !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Sticky Navigation -->
+  <header class="top-nav">
+    <div class="nav-container">
+      <a href="index.html" class="nav-brand">
+        <div class="shield-badge">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+        </div>
+        <span>极客创新实验室</span>
+        <span class="nav-brand-tag">学习资产库 · 网络安全部</span>
+      </a>
+      <div class="nav-actions">
+        <a href="index.html" class="nav-btn nav-btn-secondary">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          返回完整实战路线
+        </a>
+        <a href="https://ctf.example.com" target="_blank" rel="noopener" class="nav-btn nav-btn-primary">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          实战靶场 (ctf.example.com) ↗
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="main-wrap">
+    
+    <!-- Header Banner -->
+    <section class="header-banner">
+      <div class="breadcrumb">
+        <a href="index.html">极客创新实验室</a>
+        <span>/</span>
+        <span>训练营精选资产</span>
+        <span>/</span>
+        <span>网络安全自学技术全景思维导图</span>
+      </div>
+      <h1 class="asset-title">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+        <span>网络安全 &amp; CTF 需要掌握的技术 · 交互式全景思维导图</span>
+      </h1>
+      <p class="asset-desc">
+        大一新生自学用：涵盖起步工具环境、AI 协同攻防、Web 攻防、Misc 杂项与取证、Crypto 密码学、Reverse 逆向工程、Pwn 二进制漏洞利用，以及权威靶场与复盘体系等 8 大核心分支。每项技术细分「入门 / 进阶」两条链路，均配有官方权威文档、B站精选视频或 GitHub 实战源码。
+      </p>
+    </section>
+
+    <!-- Toolbar -->
+    <div class="toolbar-card">
+      <div class="toolbar-left">
+        <div class="search-box">
+          <svg class="search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          <input type="text" id="treeSearch" placeholder="搜索 80 项技术（如: SQLi, IDA, ROP, Wireshark）..." />
+        </div>
+        <div class="tool-buttons-row">
+          <button class="tool-btn" id="btnExpandAll">展开全部</button>
+          <button class="tool-btn" id="btnCollapseAll">折叠全部</button>
+        </div>
+        <div class="filter-pills">
+          <button class="filter-pill active" data-filter="all">全部阶段</button>
+          <button class="filter-pill" data-filter="intro">仅看入门</button>
+          <button class="filter-pill" data-filter="advanced">仅看进阶</button>
+        </div>
+      </div>
+      <div class="meta-stat">
+        <span>已收录 <strong>8</strong> 个技术分支 · <strong>80</strong> 项技术节点 · <strong>80</strong> 条精选直达资源</span>
+      </div>
+    </div>
+
+    <!-- Tree Content Card -->
+    <div class="tree-card">
+      <div class="mobile-scroll-hint">💡 手机端提示：支持向右横向滑动浏览完整的树形分支</div>
+      <ul class="tree">
+  <li><div class="root-node"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg><span>网络安全 &amp; CTF 需要掌握的技术</span><span class="root-tag">网络安全创新团队</span></div>
+    <ul>
+      <li class="branch" style="--c:#0284C7">
+        <details open>
+          <summary><span class="label">环境与工具（起步基建栈）</span></summary>
+          <ul>
+            <li class="lv2">
+              <details open>
+                <summary><span class="label">入门</span></summary>
+                <ul>
+                  <li class="leaf lv3"><div class="row"><span class="k">Python 基础语法与脚本改写</span><span class="v">看懂自动化解题脚本，掌握字符串/列表/字典与文件操作</span> <a class="btn-link" href="https://www.bilibili.com/video/BV1Jgf6YvE8e" target="_blank" rel="noopener">↗ B站 · 林粒粒动画</a></div></li>
+                  <li class="leaf lv3"><div class="row"><span class="k">Kali Linux 与 WSL2</span><span class="v">渗透测试专用系统，熟练掌握常用 Linux 命令行与权限排查</span> <a class="btn-link" href="https://www.kali.org/get-kali/" target="_blank" rel="noopener">↗ Kali 官方镜像</a></div></li>
+                  <li class="leaf lv3"><div class="row"><span class="k">OverTheWire: Bandit</span><span class="v">趣味闯关式掌握 Linux 核心指令、管道与权限机制</span> <a class="btn-link" href="https://overthewire.org/wargames/bandit/" target="_blank" rel="noopener">↗ Bandit 闯关靶场</a></div></li>
+                  <li class="leaf lv3"><div class="row"><span class="k">浏览器 F12 开发者工具</span><span class="v">网络抓包、元素检查、Console 调试与 Cookie/Storage 会话审查</span> <a class="btn-link" href="https://developer.mozilla.org/zh-CN/docs/Learn/Common_questions/Tools_and_setup/What_are_browser_developer_tools" target="_blank" rel="noopener">↗ MDN · 调试指南</a></div></li>
+                  <li class="leaf lv3"><div class="row"><span class="k">Git 与 GitHub</span><span class="v">安全工具克隆、Exp 脚本版本控制与个人知识库管理</span> <a class="btn-link" href="https://git-scm.com/book/zh/v2" target="_blank" rel="noopener">↗ Pro Git 中文版</a></div></li>
+                </ul>
+              </details>
+            </li>
+            <li class="lv2">
+              <details open>
+                <summary><span class="label">进阶</span></summary>
+                <ul>
+                  <li class="leaf lv3"><div class="row"><span class="k">Docker 容器化与靶场部署</span><span class="v">轻量级隔离环境，秒级启动与复现真实漏洞场景</span> <a class="btn-link" href="https://docs.docker.com/get-started/" target="_blank" rel="noopener">↗ Docker 官方文档</a></div></li>
+                  <li class="leaf lv3"><div class="row"><span class="k">C 语言底层与内存指针</span><span class="v">主攻二进制/逆向方向必学：指针、结构体与内存布局</span> <a class="btn-link" href="https://www.bilibili.com/video/BV1th411z7sn/" target="_blank" rel="noopener">↗ B站 · 浙大翁恺</a></div></li>
+                  <li class="leaf lv3"><div class="row"><span class="k">x86/x64 汇编与调用约定</span><span class="v">深入 CPU 寄存器、栈帧分配与函数调用控制流</span> <a class="btn-link" href="https://www.bilibili.com/video/BV1pi4y1v7a8/" target="_blank" rel="noopener">↗ B站 · 汇编程序设计</a></div></li>
+                  <li class="leaf lv3"><div class="row"><span class="k">Wireshark 抓包深度分析</span><span class="v">网络分层协议解码、过滤语法规则与 TCP 流跟踪重组</span> <a class="btn-link" href="https://www.wireshark.org/docs/" target="_blank" rel="noopener">↗ Wireshark 手册</a></div></li>
+                  <li class="leaf lv3"><div class="row"><span class="k">正则表达式与文本提取</span><span class="v">安全脚本中高效匹配 Flag 与提取关键参数必备</span> <a class="btn-link" href="https://www.runoob.com/regexp/regexp-tutorial.html" target="_blank" rel="noopener">↗ 正则速查指南</a></div></li>
+                </ul>
+              </details>
+            </li>
+          </ul>
+        </details>
+      </li>
+      <li class="branch" style="--c:#2563EB">
+        <details open>
+          <summary><span class="label">AI 协同攻防（赛博导师）</span></summary>
+          <ul>
+            <li class="lv2">
+              <details open>
+                <summary><span class="label">入门</span></summary>
+                <ul>
+                  <li class="leaf lv3"><div class="row"><span class="k">国内主流 LLM (DeepSeek / Kimi)</span><span class="v">极强代码推理与长文本解读，快速理清陌生协议与报错</span> <a class="btn-link" href="https://chat.deepseek.com/" target="_blank" rel="noopener">↗ DeepSeek 官网</a></div></li>
+                  <li class="leaf lv3"><div class="row"><span class="k">AI 原生 IDE (Cursor / Windsurf)</span><span class="v">智能上下文感知补全，辅助编写自动化 Exp 攻击脚本</span> <a class="btn-link" href="https://www.cursor.com/" target="_blank" rel="noopener">↗ Cursor 官网</a></div></li>
+                  <li class="leaf lv3"><div class="row"><span class="k">结构化提问工程 (Prompting)</span><span class="v">引导 AI 分析漏洞成因与防御思路，拒绝当伸手党</span> <a class="btn-link" href="https://learnprompting.org/zh-Hans/docs/intro" target="_blank" rel="noopener">↗ Prompt 指南</a></div></li>
+                  <li class="leaf lv3"><div class="row"><span class="k">赛博导师协同守则</span><span class="v">AI 仅作为辅助理解工具，核心原理必须亲自动手推导</span> <a class="btn-link" href="https://hello-ctf.com/" target="_blank" rel="noopener">↗ Hello CTF 百科</a></div></li>
+                </ul>
+              </details>
+            </li>
+            <li class="lv2">
+              <details open>
+                <summary><span class="label">进阶</span></summary>
+                <ul>
+                  <li class="leaf lv3"><div class="row"><span class="k">终端自主智能体 (Claude Code / Cline)</span><span class="v">自主探索代码库、执行长流程漏洞排查与环境搭建</span> <a class="btn-link" href="https://github.com/cline/cline" target="_blank" rel="noopener">↗ GitHub · Cline</a></div></li>
+                  <li class="leaf lv3"><div class="row"><span class="k">攻防破甲测试工具 (dsh-purge)</span><span class="v">开源攻防破甲脚本与安全边界评估实验工具</span> <a class="btn-link" href="https://github.com/YuJunZhiXue/dsh-purge" target="_blank" rel="noopener">↗ GitHub · dsh-purge</a></div></li>
+                  <li class="leaf lv3"><div class="row"><span class="k">大模型红队安全 (LLM Red Teaming)</span><span class="v">提示词注入、越狱利用、恶意输入检测与安全护栏防御</span> <a class="btn-link" href="https://owasp.org/www-project-top-10-for-large-language-model-applications/" target="_blank" rel="noopener">↗ OWASP LLM Top 10</a></div></li>
+                  <li class="leaf lv3"><div class="row"><span class="k">AI 辅助白盒代码审计</span><span class="v">基于代码语义模型进行污点追踪与高危函数调用挖掘</span> <a class="btn-link" href="https://github.com/microsoft/CodeBERT" target="_blank" rel="noopener">↗ GitHub · CodeBERT</a></div></li>
+                </ul>
+              </details>
+            </li>
+          </ul>
+        </details>
+      </li>
+      <li class="branch" style="--c:#7C3AED">
+        <details open>
+          <summary><span class="label">Web 攻防技术（网络安全核心战场）</span></summary>
+          <ul>
+            <li class="lv2">
+              <details open>
+                <summary><span class="label">入门</span></summary>
+                <ul>
+                  <li class="leaf lv3"><div class="row"><span class="k">HTTP/HTTPS 协议与通信机制</span><span class="v">请求方法、Header 字段、状态码、Cookie 与 Session 机制</span> <a class="btn-link" href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP" target="_blank" rel="noopener">↗ MDN · HTTP 手册</a></div></li>
+                  <li class="leaf lv3"><div class="row"><span class="k">SQL 注入漏洞 (SQLi)</span><span class="v">联合查询注入、报错注入、布尔/时间盲注与宽字节绕过</span> <a class="btn-link" href="https://portswigger.net/web-security/sql-injection" target="_blank" rel="noopener">↗ PortSwigger · SQLi</a></div></li>
+                  <li class="leaf lv3"><div class="row"><span class="k">跨站脚本攻击 (XSS)</span><span class="v">反射型、存储型与 DOM 型 XSS 原理及会话凭据窃取</span> <a class="btn-link" href="https://portswigger.net/web-security/cross-site-scripting" target="_blank" rel="noopener">↗ PortSwigger · XSS</a></div></li>
+                  <li class="leaf lv3"><div class="row"><span class="k">文件上传漏洞利用</span><span class="v">文件后缀黑白名单绕过、MIME 伪造、解析漏洞与条件竞争</span> <a class="btn-link" href="https://portswigger.net/web-security/file-upload" target="_blank" rel="noopener">↗ PortSwigger · 上传</a></div></li>
+                  <li class="leaf lv3"><div class="row"><span class="k">Burp Suite 核心抓包调试</span><span class="v">Proxy 代理截断、Repeater 构造重放、Intruder 字典测试</span> <a class="btn-link" href="https://portswigger.net/burp/communitydownload" target="_blank" rel="noopener">↗ Burp Suite 社区版</a></div></li>
+                </ul>
+              </details>
+            </li>
+            <li class="lv2">
+              <details open>
+                <summary><span class="label">进阶</span></summary>
+                <ul>
+                  <li class="leaf lv3"><div class="row"><span class="k">命令执行与 RCE</span><span class="v">管道符绕过、字符限制绕过、内联执行与反弹 Shell 建立</span> <a class="btn-link" href="https://github.com/swisskyrepo/PayloadsAllTheThings/tree/master/Command%20Injection" target="_blank" rel="noopener">↗ Payloads · 命令注入</a></div></li>
+                  <li class="leaf lv3"><div class="row"><span class="k">服务端模板注入 (SSTI)</span><span class="v">Jinja2 / Twig / Smarty 沙箱逃逸与内置对象方法利用</span> <a class="btn-link" href="https://portswigger.net/web-security/server-side-template-injection" target="_blank" rel="noopener">↗ PortSwigger · SSTI</a></div></li>
+                  <li class="leaf lv3"><div class="row"><span class="k">PHP 反序列化漏洞</span><span class="v">常见魔术方法调用链、POP 链构造与原生类利用技巧</span> <a class="btn-link" href="https://ctf-wiki.org/web/php/unserialize/" target="_blank" rel="noopener">↗ CTF Wiki · 反序列化</a></div></li>
+                  <li class="leaf lv3"><div class="row"><span class="k">服务端请求伪造 (SSRF)</span><span class="v">内网资产探测、Gopher 协议利用、云元数据服务窃取</span> <a class="btn-link" href="https://portswigger.net/web-security/ssrf" target="_blank" rel="noopener">↗ PortSwigger · SSRF</a></div></li>
+                  <li class="leaf lv3"><div class="row"><span class="k">身份认证与越权缺陷 (IDOR / JWT)</span><span class="v">水平/垂直越权测试、JWT 密钥爆破与头部算法混淆</span> <a class="btn-link" href="https://portswigger.net/web-security/access-control" target="_blank" rel="noopener">↗ PortSwigger · 越权</a></div></li>
+                </ul>
+              </details>
+            </li>
+          </ul>
+        </details>
+      </li>
+      <li class="branch" style="--c:#DB2777">
+        <details open>
+          <summary><span class="label">Misc 安全杂项（实战侦察与取证）</span></summary>
+          <ul>
+            <li class="lv2">
+              <details open>
+                <summary><span class="label">入门</span></summary>
+                <ul>
+                  <li class="leaf lv3"><div class="row"><span class="k">编码解码综合分析</span><span class="v">Base64/32/16、URL、Morse、Brainfuck、UUencode 等快速识别</span> <a class="btn-link" href="https://gchq.github.io/CyberChef/" target="_blank" rel="noopener">↗ CyberChef 瑞士军刀</a></div></li>
+                  <li class="leaf lv3"><div class="row"><span class="k">流量包抓取与分析 (PCAP)</span><span class="v">Wireshark 过滤语法、HTTP/DNS 数据包还原与隐藏文件提取</span> <a class="btn-link" href="https://www.wireshark.org/docs/wsug_html_chunked/" target="_blank" rel="noopener">↗ Wireshark 指南</a></div></li>
+                  <li class="leaf lv3"><div class="row"><span class="k">图片隐写与文件结构校验</span><span class="v">010 Editor 十六进制修改、PNG/JPG 头尾修复、Binwalk 提取</span> <a class="btn-link" href="https://www.sweetscape.com/010editor/" target="_blank" rel="noopener">↗ 010 Editor 官方</a></div></li>
+                  <li class="leaf lv3"><div class="row"><span class="k">压缩包隐写与密码爆破</span><span class="v">Zip 伪加密检测修复、CRC32 爆破与已知明文攻击</span> <a class="btn-link" href="https://ctf-wiki.org/misc/summary/" target="_blank" rel="noopener">↗ CTF Wiki · Misc 基础</a></div></li>
+                </ul>
+              </details>
+            </li>
+            <li class="lv2">
+              <details open>
+                <summary><span class="label">进阶</span></summary>
+                <ul>
+                  <li class="leaf lv3"><div class="row"><span class="k">电子取证与内存分析</span><span class="v">Volatility 从内存镜像提取密码凭证、活动进程与网络连接</span> <a class="btn-link" href="https://volatilityfoundation.org/" target="_blank" rel="noopener">↗ Volatility 官网</a></div></li>
+                  <li class="leaf lv3"><div class="row"><span class="k">磁盘镜像取证与文件恢复</span><span class="v">FTK Imager 镜像挂载分析、extundelete 文件误删恢复</span> <a class="btn-link" href="https://www.exterro.com/ftk-imager" target="_blank" rel="noopener">↗ FTK Imager 官网</a></div></li>
+                  <li class="leaf lv3"><div class="row"><span class="k">音频与频域隐写分析</span><span class="v">Audacity 观察音频频谱图、MP3Stego 隐写工具解密</span> <a class="btn-link" href="https://www.audacityteam.org/" target="_blank" rel="noopener">↗ Audacity 官方</a></div></li>
+                  <li class="leaf lv3"><div class="row"><span class="k">工控与物联网流量协议</span><span class="v">Modbus、IEC 104、工控协议工业组态与蓝牙流量分析</span> <a class="btn-link" href="https://ctf-wiki.org/misc/traffic/protocols/modbus/" target="_blank" rel="noopener">↗ CTF Wiki · 工控安全</a></div></li>
+                </ul>
+              </details>
+            </li>
+          </ul>
+        </details>
+      </li>
+      <li class="branch" style="--c:#EA580C">
+        <details open>
+          <summary><span class="label">Crypto 密码学（数学机理与破解）</span></summary>
+          <ul>
+            <li class="lv2">
+              <details open>
+                <summary><span class="label">入门</span></summary>
+                <ul>
+                  <li class="leaf lv3"><div class="row"><span class="k">密码学数学基础</span><span class="v">素数判定、模运算算术、扩展欧几里得定理与费马小定理</span> <a class="btn-link" href="https://www.bilibili.com/video/BV1m4411Z7wG/" target="_blank" rel="noopener">↗ B站 · 密码学数学</a></div></li>
+                  <li class="leaf lv3"><div class="row"><span class="k">古典密码学解析</span><span class="v">凯撒、维吉尼亚、培根、栅栏密码与频数分析法</span> <a class="btn-link" href="https://ctf-wiki.org/crypto/classical/summary/" target="_blank" rel="noopener">↗ CTF Wiki · 古典密码</a></div></li>
+                  <li class="leaf lv3"><div class="row"><span class="k">对称加密与分组密码</span><span class="v">AES、DES、RC4 算法、ECB/CBC 模式与填充攻击</span> <a class="btn-link" href="https://cryptohack.org/challenges/aes/" target="_blank" rel="noopener">↗ CryptoHack · 对称加密</a></div></li>
+                  <li class="leaf lv3"><div class="row"><span class="k">哈希散列与消息摘要</span><span class="v">MD5、SHA-256 原理、哈希碰撞与长度扩展攻击</span> <a class="btn-link" href="https://ctf-wiki.org/crypto/hash/" target="_blank" rel="noopener">↗ CTF Wiki · 哈希攻击</a></div></li>
+                  <li class="leaf lv3"><div class="row"><span class="k">Python 密码学编程库</span><span class="v">利用 gmpy2、pycryptodome 快速编写自动化解题脚本</span> <a class="btn-link" href="https://pycryptodome.readthedocs.io/" target="_blank" rel="noopener">↗ PyCryptodome 文档</a></div></li>
+                </ul>
+              </details>
+            </li>
+            <li class="lv2">
+              <details open>
+                <summary><span class="label">进阶</span></summary>
+                <ul>
+                  <li class="leaf lv3"><div class="row"><span class="k">非对称加密 RSA 核心漏洞</span><span class="v">欧拉函数、共模攻击、低公钥指数 e=3 攻击与已知质数分解</span> <a class="btn-link" href="https://cryptohack.org/challenges/rsa/" target="_blank" rel="noopener">↗ CryptoHack · RSA 挑战</a></div></li>
+                  <li class="leaf lv3"><div class="row"><span class="k">椭圆曲线密码学 (ECC)</span><span class="v">点加法则、标量乘法、ECDSA 随机数复用缺陷与私钥恢复</span> <a class="btn-link" href="https://cryptohack.org/challenges/ecc/" target="_blank" rel="noopener">↗ CryptoHack · 椭圆曲线</a></div></li>
+                  <li class="leaf lv3"><div class="row"><span class="k">高维格密码与 SageMath</span><span class="v">矩阵运算、LLL 格基规约算法求解高维同余方程</span> <a class="btn-link" href="https://www.sagemath.org/" target="_blank" rel="noopener">↗ SageMath 官网</a></div></li>
+                  <li class="leaf lv3"><div class="row"><span class="k">前沿现代密码学体系</span><span class="v">后量子密码 (PQC)、零知识证明 (ZKP) 核心逻辑探秘</span> <a class="btn-link" href="https://github.com/matter-labs/awesome-zero-knowledge-proofs" target="_blank" rel="noopener">↗ Awesome ZKP</a></div></li>
+                </ul>
+              </details>
+            </li>
+          </ul>
+        </details>
+      </li>
+      <li class="branch" style="--c:#4F46E5">
+        <details open>
+          <summary><span class="label">Reverse 逆向工程（程序逆向与反编译）</span></summary>
+          <ul>
+            <li class="lv2">
+              <details open>
+                <summary><span class="label">入门</span></summary>
+                <ul>
+                  <li class="leaf lv3"><div class="row"><span class="k">计算机组成与可执行文件结构</span><span class="v">Windows PE / Linux ELF 文件格式、节区映射与执行流程</span> <a class="btn-link" href="https://ctf-wiki.org/reverse/summary/" target="_blank" rel="noopener">↗ CTF Wiki · 逆向基础</a></div></li>
+                  <li class="leaf lv3"><div class="row"><span class="k">静态反编译神器 (IDA Pro / Ghidra)</span><span class="v">F5 查看伪代码、交叉引用定位关键逻辑、变量重命名</span> <a class="btn-link" href="https://ghidra-sre.org/" target="_blank" rel="noopener">↗ Ghidra 官方项目</a></div></li>
+                  <li class="leaf lv3"><div class="row"><span class="k">动态调试基础 (x64dbg / GDB)</span><span class="v">断点设置、单步步过/步入、实时监视内存与寄存器变化</span> <a class="btn-link" href="https://x64dbg.com/" target="_blank" rel="noopener">↗ x64dbg 官网</a></div></li>
+                  <li class="leaf lv3"><div class="row"><span class="k">高级解释型语言反编译</span><span class="v">Python .pyc 逆向反编译还原、Java .class/.jar 逆向分析</span> <a class="btn-link" href="https://github.com/skylot/jadx" target="_blank" rel="noopener">↗ JADX 反编译器</a></div></li>
+                </ul>
+              </details>
+            </li>
+            <li class="lv2">
+              <details open>
+                <summary><span class="label">进阶</span></summary>
+                <ul>
+                  <li class="leaf lv3"><div class="row"><span class="k">代码混淆与花指令消除</span><span class="v">控制流平坦化识别、虚假控制流消除、编写 IDA 脚本清理</span> <a class="btn-link" href="https://ctf-wiki.org/reverse/obfuscation/" target="_blank" rel="noopener">↗ CTF Wiki · 混淆对抗</a></div></li>
+                  <li class="leaf lv3"><div class="row"><span class="k">反调试技术与加壳脱壳</span><span class="v">常见反调试 API 绕过、硬件断点对抗、UPX 手动脱壳</span> <a class="btn-link" href="https://www.52pojie.cn/" target="_blank" rel="noopener">↗ 吾爱破解精选</a></div></li>
+                  <li class="leaf lv3"><div class="row"><span class="k">符号执行与约束求解 (angr / Z3)</span><span class="v">符号化执行自动寻找正确执行分支、快速求解 Flag</span> <a class="btn-link" href="https://angr.io/" target="_blank" rel="noopener">↗ angr 官方手册</a></div></li>
+                  <li class="leaf lv3"><div class="row"><span class="k">移动端安全与逆向分析</span><span class="v">Android APK 反编译、Frida 动态 Hook 注入与函数替换</span> <a class="btn-link" href="https://frida.re/docs/home/" target="_blank" rel="noopener">↗ Frida 官方文档</a></div></li>
+                </ul>
+              </details>
+            </li>
+          </ul>
+        </details>
+      </li>
+      <li class="branch" style="--c:#059669">
+        <details open>
+          <summary><span class="label">Pwn 二进制漏洞利用（底层攻防艺术）</span></summary>
+          <ul>
+            <li class="lv2">
+              <details open>
+                <summary><span class="label">入门</span></summary>
+                <ul>
+                  <li class="leaf lv3"><div class="row"><span class="k">Linux 进程内存与栈帧布局</span><span class="v">rbp/rsp、局部变量内存排布与函数返回地址（ret）覆写</span> <a class="btn-link" href="https://ctf-wiki.org/pwn/linux/user-mode/stackoverflow/x86/stack-intro/" target="_blank" rel="noopener">↗ CTF Wiki · 栈溢出</a></div></li>
+                  <li class="leaf lv3"><div class="row"><span class="k">基础栈溢出与 ret2text</span><span class="v">通过栈溢出控制返回地址，精准劫持程序跳往后门函数</span> <a class="btn-link" href="https://ctf-wiki.org/pwn/linux/user-mode/stackoverflow/x86/ret2text/" target="_blank" rel="noopener">↗ CTF Wiki · ret2text</a></div></li>
+                  <li class="leaf lv3"><div class="row"><span class="k">pwntools 自动化 Exp 开发</span><span class="v">建立连接、交互发包、数据打包解包与自动化利用开发</span> <a class="btn-link" href="https://docs.pwntools.com/" target="_blank" rel="noopener">↗ pwntools 官方文档</a></div></li>
+                  <li class="leaf lv3"><div class="row"><span class="k">GDB 增强插件 (pwndbg / gef)</span><span class="v">栈帧实时高亮、内存布局可视化与寄存器状态追踪</span> <a class="btn-link" href="https://github.com/pwndbg/pwndbg" target="_blank" rel="noopener">↗ pwndbg 官方项目</a></div></li>
+                </ul>
+              </details>
+            </li>
+            <li class="lv2">
+              <details open>
+                <summary><span class="label">进阶</span></summary>
+                <ul>
+                  <li class="leaf lv3"><div class="row"><span class="k">系统级保护机制与绕过</span><span class="v">ASLR 地址随机化、NX/DEP、Stack Canary 与 PIE 保护绕过</span> <a class="btn-link" href="https://ctf-wiki.org/pwn/linux/user-mode/protection/" target="_blank" rel="noopener">↗ CTF Wiki · 保护机制</a></div></li>
+                  <li class="leaf lv3"><div class="row"><span class="k">ROP 返回导向编程 (ret2libc)</span><span class="v">利用程序或 libc 中的 Gadget 串联调用 system("/bin/sh")</span> <a class="btn-link" href="https://github.com/JonathanSalwan/ROPgadget" target="_blank" rel="noopener">↗ ROPgadget 工具</a></div></li>
+                  <li class="leaf lv3"><div class="row"><span class="k">格式化字符串漏洞利用</span><span class="v">任意内存地址读取泄露基址、%n 格式化字符覆写内存</span> <a class="btn-link" href="https://ctf-wiki.org/pwn/linux/user-mode/fmtstr/fmtstr_intro/" target="_blank" rel="noopener">↗ CTF Wiki · 格式化字符串</a></div></li>
+                  <li class="leaf lv3"><div class="row"><span class="k">Linux 堆内存利用 (Heap Exploitation)</span><span class="v">ptmalloc 机制、UAF (释放后使用)、Fastbin 劫持攻击</span> <a class="btn-link" href="https://github.com/shellphish/how2heap" target="_blank" rel="noopener">↗ How2Heap 仓库</a></div></li>
+                  <li class="leaf lv3"><div class="row"><span class="k">Linux 内核 Pwn 基础</span><span class="v">内核态与用户态切换机制、commit_creds 提权链构造</span> <a class="btn-link" href="https://ctf-wiki.org/pwn/linux/kernel/kernel_intro/" target="_blank" rel="noopener">↗ CTF Wiki · 内核 Pwn</a></div></li>
+                </ul>
+              </details>
+            </li>
+          </ul>
+        </details>
+      </li>
+      <li class="branch" style="--c:#D97706">
+        <details open>
+          <summary><span class="label">权威知识库、实战靶场与沉淀（练兵实训）</span></summary>
+          <ul>
+            <li class="lv2">
+              <details open>
+                <summary><span class="label">入门</span></summary>
+                <ul>
+                  <li class="leaf lv3"><div class="row"><span class="k">CTF 实战攻防专属靶场</span><span class="v">实验室纳新专属实训平台，紧贴路线配题，支持一键开题</span> <a class="btn-link" href="https://ctf.example.com" target="_blank" rel="noopener">↗ 专属靶场 (ctf.example.com)</a></div></li>
+                  <li class="leaf lv3"><div class="row"><span class="k">Hello CTF 萌新入门手册</span><span class="v">零基础全景科普，通俗拆解网络安全竞赛各大方向与工具</span> <a class="btn-link" href="https://hello-ctf.com/" target="_blank" rel="noopener">↗ Hello CTF 在线手册</a></div></li>
+                  <li class="leaf lv3"><div class="row"><span class="k">CTF Wiki 官方知识库</span><span class="v">国内最全面、权威且免费开源的网络安全竞赛知识体系</span> <a class="btn-link" href="https://ctf-wiki.org/" target="_blank" rel="noopener">↗ CTF Wiki 官网</a></div></li>
+                  <li class="leaf lv3"><div class="row"><span class="k">CTFHub 技能树闯关</span><span class="v">系统化技能树，从单项基础漏洞开始逐个突破，支持真题</span> <a class="btn-link" href="https://www.ctfhub.com/" target="_blank" rel="noopener">↗ CTFHub 官网</a></div></li>
+                  <li class="leaf lv3"><div class="row"><span class="k">CTFshow 萌新练兵场</span><span class="v">针对新人的新手杯、按分类循序渐进的刷题靶场与题解群</span> <a class="btn-link" href="https://ctf.show/" target="_blank" rel="noopener">↗ CTFshow 官网</a></div></li>
+                </ul>
+              </details>
+            </li>
+            <li class="lv2">
+              <details open>
+                <summary><span class="label">进阶</span></summary>
+                <ul>
+                  <li class="leaf lv3"><div class="row"><span class="k">NSSCTF 战队演练与社区</span><span class="v">全国高校赛题高质量复现，活跃的解题思路与题解讨论区</span> <a class="btn-link" href="https://www.nssctf.cn/" target="_blank" rel="noopener">↗ NSSCTF 平台</a></div></li>
+                  <li class="leaf lv3"><div class="row"><span class="k">BUUCTF 国赛真题复现平台</span><span class="v">国内高规格网安公开赛与国赛真题在线练习环境</span> <a class="btn-link" href="https://buuoj.cn/" target="_blank" rel="noopener">↗ BUUCTF 官网</a></div></li>
+                  <li class="leaf lv3"><div class="row"><span class="k">Hack The Box (HTB) 内网靶场</span><span class="v">国际顶尖实战渗透靶场，涵盖真实内网环境与域提权练习</span> <a class="btn-link" href="https://www.hackthebox.com/" target="_blank" rel="noopener">↗ Hack The Box 官网</a></div></li>
+                  <li class="leaf lv3"><div class="row"><span class="k">实战渗透认证 (OSCP)</span><span class="v">业内高含金量实战考试（24小时限时真机渗透演练）</span> <a class="btn-link" href="https://www.offsec.com/courses/pen-200/" target="_blank" rel="noopener">↗ OffSec · OSCP 认证</a></div></li>
+                  <li class="leaf lv3"><div class="row"><span class="k">Writeup 复盘与知识沉淀</span><span class="v">建立个人技术博客，按照规范复盘漏洞成因形成个人资产</span> <a class="btn-link" href="https://hello-ctf.com/community/how-to-write-wp/" target="_blank" rel="noopener">↗ Hello CTF · 写好WP</a></div></li>
+                </ul>
+              </details>
+            </li>
+          </ul>
+        </details>
+      </li>
+    </ul>
+  </li>
+</ul>
+    </div>
+
+    <!-- Footer Note -->
+    <div class="footer-note">
+      <strong>💡 新生自学节奏建议：</strong><br>
+      1. <strong>循序渐进</strong>：每项技术细分为「入门 / 进阶」两部分。起步阶段先将基础工具与环境跑通，在实战靶场体验新手题目，遇到知识缺口再顺着思维导图找对应资料补齐。<br>
+      2. <strong>直通资源</strong>：每条技术项右侧的蓝色便签均为具体页面、官方手册章节或视频直达链接。若遇官方改版失效，直接复制节点标题在对应站点检索即可。<br>
+      3. <strong>推荐主干推进顺序</strong>：环境与起步工具 → AI 协同学习 → 选学 1~2 个 CTF 攻防方向（推荐 Web/Misc 起手，底层兴趣者选 Reverse/Pwn） → 在专属靶场刷题并规范写 Writeup → 迈向真实漏洞挖掘与红蓝对抗。
+    </div>
+
+    <div class="footer-bottom">
+      极客创新实验室 · 网络安全战队 出品 · © 2026
+    </div>
+
+  </main>
+
+  <script>
+    // Expand / Collapse All
+    const btnExpandAll = document.getElementById('btnExpandAll');
+    const btnCollapseAll = document.getElementById('btnCollapseAll');
+
+    btnExpandAll.addEventListener('click', () => {
+      document.querySelectorAll('.tree details').forEach(d => d.open = true);
+    });
+
+    btnCollapseAll.addEventListener('click', () => {
+      document.querySelectorAll('.tree details').forEach(d => d.open = false);
+    });
+
+    // Filter Intro / Advanced
+    const filterPills = document.querySelectorAll('.filter-pill');
+    filterPills.forEach(pill => {
+      pill.addEventListener('click', () => {
+        filterPills.forEach(p => p.classList.remove('active'));
+        pill.classList.add('active');
+        const filter = pill.getAttribute('data-filter');
+
+        const lv2Details = document.querySelectorAll('li.lv2');
+        lv2Details.forEach(el => {
+          const label = el.querySelector('summary .label')?.textContent || '';
+          if (filter === 'all') {
+            el.style.display = '';
+          } else if (filter === 'intro') {
+            el.style.display = label.includes('入门') ? '' : 'none';
+          } else if (filter === 'advanced') {
+            el.style.display = label.includes('进阶') ? '' : 'none';
+          }
+        });
+      });
+    });
+
+    // Live Search
+    const searchInput = document.getElementById('treeSearch');
+    searchInput.addEventListener('input', (e) => {
+      const query = e.target.value.trim().toLowerCase();
+      const leaves = document.querySelectorAll('li.leaf');
+
+      if (!query) {
+        leaves.forEach(leaf => {
+          leaf.classList.remove('hidden');
+          const row = leaf.querySelector('.row');
+          if (row) {
+            row.style.background = '';
+          }
+        });
+        return;
+      }
+
+      // Expand all details to show matches
+      document.querySelectorAll('.tree details').forEach(d => d.open = true);
+
+      leaves.forEach(leaf => {
+        const text = leaf.textContent.toLowerCase();
+        const matches = text.includes(query);
+        const row = leaf.querySelector('.row');
+
+        if (matches) {
+          leaf.classList.remove('hidden');
+          if (row) row.style.background = '#fef08a';
+        } else {
+          leaf.classList.add('hidden');
+          if (row) row.style.background = '';
+        }
+      });
+    });
+  </script>
+</body>
+</html>
